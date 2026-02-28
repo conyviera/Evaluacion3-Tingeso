@@ -1,0 +1,161 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 09282325
+      POSTGRES_DB: ProyectTingeso
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mi-red-app
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    networks:
+      - mi-red-app
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:22.0.1
+    container_name: keycloak-server
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: mtisw
+      KEYCLOAK_ADMIN_PASSWORD: mtisw2025
+    ports:
+      - "8080:8080"
+    volumes:
+      - keycloak_data:/opt/keycloak/data/
+    depends_on:
+      - postgres
+    networks:
+      - mi-red-app
+
+  # Réplicas del backend
+    # Réplicas del backend
+  backend-1:
+    image: conyviera/proyectotingeso-backend:latest
+    container_name: backend-1
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ProyectTingeso
+      DB_USER: postgres
+      DB_PASSWORD: 09282325
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak-server:8080/realms/sisgr-realm
+      KEYCLOAK_JWK_SET_URI: http://keycloak-server:8080/realms/sisgr-realm/protocol/openid-connect/certs
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - mi-red-app
+
+  backend-2:
+    image: conyviera/proyectotingeso-backend:latest
+    container_name: backend-2
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ProyectTingeso
+      DB_USER: postgres
+      DB_PASSWORD: 09282325
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak-server:8080/realms/sisgr-realm
+      KEYCLOAK_JWK_SET_URI: http://keycloak-server:8080/realms/sisgr-realm/protocol/openid-connect/certs
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - mi-red-app
+
+  backend-3:
+    image: conyviera/proyectotingeso-backend:latest
+    container_name: backend-3
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: ProyectTingeso
+      DB_USER: postgres
+      DB_PASSWORD: 09282325
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak-server:8080/realms/sisgr-realm
+      KEYCLOAK_JWK_SET_URI: http://keycloak-server:8080/realms/sisgr-realm/protocol/openid-connect/certs
+    depends_on:
+      - postgres
+      - keycloak
+    networks:
+      - mi-red-app
+
+  # Balanceador de carga para backend
+  backend-lb:
+    image: nginx:alpine
+    container_name: backend-lb
+    ports:
+      - "8090:80"
+    volumes:
+      - ./nginx-backend.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend-1
+      - backend-2
+      - backend-3
+    networks:
+      - mi-red-app
+
+  # Réplicas del frontend
+  frontend-1:
+    image: conyviera/proyectotingeso-frontend:latest
+    container_name: frontend-1
+    depends_on:
+      - backend-lb
+      - keycloak
+    networks:
+      - mi-red-app
+
+  frontend-2:
+    image: conyviera/proyectotingeso-frontend:latest
+    container_name: frontend-2
+    depends_on:
+      - backend-lb
+      - keycloak
+    networks:
+      - mi-red-app
+
+  frontend-3:
+    image: conyviera/proyectotingeso-frontend:latest
+    container_name: frontend-3
+    depends_on:
+      - backend-lb
+      - keycloak
+    networks:
+      - mi-red-app
+
+  # Balanceador de carga para frontend
+  frontend-lb:
+    image: nginx:alpine
+    container_name: frontend-lb
+    ports:
+      - "3000:80"
+    volumes:
+      - ./nginx-frontend.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - frontend-1
+      - frontend-2
+      - frontend-3
+    networks:
+      - mi-red-app
+
+volumes:
+  postgres_data:
+  keycloak_data:
+
+networks:
+  mi-red-app:
