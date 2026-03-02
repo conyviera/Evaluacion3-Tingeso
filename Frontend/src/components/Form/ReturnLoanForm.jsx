@@ -29,17 +29,40 @@ function ReturnLoanForm({ onReturnLoan }) {
         setLoanDetails(null);
         try {
             const response = await loanService.getLoanById(loanId);
-            setLoanDetails(response.data);
+            const data = response.data;
+
+            if (data.state === 'RETURNED') {
+                setAlertConfig({
+                    open: true,
+                    message: 'El préstamo ya ha sido devuelto.',
+                    type: 'warning'
+                });
+                return;
+            }
+
+            if (!data) {
+                setAlertConfig({
+                    open: true,
+                    message: 'El préstamo no existe.',
+                    type: 'warning'
+                });
+                return;
+            }
+
+            setLoanDetails(data);
 
             const initialStates = {};
-            response.data.tool.forEach(tool => {
+            data.tool.forEach(tool => {
                 initialStates[tool.idTool] = 'GOOD';
             });
             setToolStates(initialStates);
 
         } catch (err) {
             let errorMsg = 'Error al buscar el préstamo. Por favor, inténtalo de nuevo.';
-            if (err.response?.data) {
+
+            if (err.response?.status === 404) {
+                errorMsg = 'El préstamo no existe.';
+            } else if (err.response?.data) {
                 if (typeof err.response.data === 'string') {
                     errorMsg = err.response.data;
                 } else if (err.response.data.message) {
@@ -79,8 +102,6 @@ function ReturnLoanForm({ onReturnLoan }) {
         const payload = {
             toolStates: toolStatesArray
         };
-
-        console.log(">>>>> PAYLOAD DE DEVOLUCIÓN ENVIADO AL BACKEND: ", payload);
 
         try {
             await loanService.returnLoan(loanId, payload);

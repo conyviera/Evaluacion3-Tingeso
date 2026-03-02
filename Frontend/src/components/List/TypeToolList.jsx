@@ -168,9 +168,9 @@ const TypeToolList = ({ typeTool, onRefreshList, loading, error, requestSort, so
                   <MuiTableCell align="center">{tool.idTypeTool}</MuiTableCell>
                   <MuiTableCell align="center">{tool.name}</MuiTableCell>
                   <MuiTableCell align="center">{tool.category}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.replacementValue}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.dailyRate}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.debtRate}</MuiTableCell>
+                  <MuiTableCell align="center">$ {tool.replacementValue}</MuiTableCell>
+                  <MuiTableCell align="center">$ {tool.dailyRate}</MuiTableCell>
+                  <MuiTableCell align="center">$ {tool.debtRate}</MuiTableCell>
                   <MuiTableCell align="center">{tool.stock}</MuiTableCell>
                   <MuiTableCell align="center">
                     <Box display="flex" justifyContent="center" alignItems="center">

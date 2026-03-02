@@ -33,9 +33,29 @@ const getTopTools = async () => {
     return httpClient.get("/loans/report");
 };
 
-const countActiveLoans = async () => {
-    return httpClient.get("/loans/countLoans");
+const getTopToolsByDeliveryDateBetween = async (startDate, endDate) => {
+    return httpClient.get("/loans/reportDate", { params: { startDate, endDate } });
 };
+
+const countActiveLoans = async () => {
+    return httpClient.get("/loans/countLoansActive");
+};
+
+const countActiveLoansByDeliveryDateBetween = async (startDate, endDate) => {
+    return httpClient.get("/loans/countByDeliveryDateBetweenActive", { params: { startDate, endDate } });
+};
+
+const countExpiredLoansByDeliveryDateBetween = async (startDate, endDate) => {
+    return httpClient.get("/loans/countByDeliveryDateBetweenExpired", { params: { startDate, endDate } });
+};
+
+const countExpiredLoans = async () => {
+    return httpClient.get("/loans/countLoansExpired");
+};
+
+const loanActiveAndExpireFilterDate = async (startDate, endDate) => {
+    return httpClient.get("/loans/loanActiveAndExpireFilterDate", { params: { startDate, endDate } });
+}
 
 export default {
     createLoan,
@@ -46,6 +66,11 @@ export default {
     payDebt,
     rentalAmount,
     getTopTools,
-    countActiveLoans
+    getTopToolsByDeliveryDateBetween,
+    countActiveLoans,
+    countActiveLoansByDeliveryDateBetween,
+    countExpiredLoansByDeliveryDateBetween,
+    countExpiredLoans,
+    loanActiveAndExpireFilterDate
 };
 

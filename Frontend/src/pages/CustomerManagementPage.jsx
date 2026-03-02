@@ -22,6 +22,7 @@ import {
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { buttonPrimary } from '../components/Styles/ButtonStyles.jsx';
 import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
 import { paginationStyles } from '../components/Styles/PaginationStyles.jsx';
 
 function CustomerManagementPage() {
@@ -103,7 +104,6 @@ function CustomerManagementPage() {
 
   const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange, resetPage } = usePagination(sortedItems);
 
-  /*------------------------- RENDER ------------------------- */
   return (
     <Box sx={{ padding: { xs: 2, md: 3 } }}>
 
@@ -194,16 +194,18 @@ function CustomerManagementPage() {
             </FormControl>
           </Grid>
         </Grid>
-
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<ClearIcon />}
+        <IconButton
           onClick={handleClearFilters}
-          sx={{ height: 40, whiteSpace: 'nowrap' }}
+          sx={{
+            color: '#4E7D10',
+            '&:hover': {
+              filter: 'drop-shadow(0 0 10px #4E7D10)',
+            },
+          }}
+          title="Limpiar"
         >
-          Limpiar Filtros
-        </Button>
+          <ClearIcon />
+        </IconButton>
       </Box>
 
       {/* --- FIN DE LA NUEVA BARRA --- */}
@@ -239,9 +241,9 @@ function CustomerManagementPage() {
               label="Filas"
               onChange={handleItemsPerPageChange}
             >
+              <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={25}>25</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={15}>15</MenuItem>
             </Select>
           </FormControl>
         </Stack>

@@ -4,6 +4,11 @@ import { useSort } from '../hooks/useSort';
 import { getErrorMessage } from '../utils/errorHandler.js';
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import dayjs from 'dayjs';
 import {
   Box,
   Grid,
@@ -13,10 +18,15 @@ import {
   Select,
   MenuItem,
   Button,
-  Typography
+  Typography,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import ClearIcon from '@mui/icons-material/Clear';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import SearchIcon from '@mui/icons-material/Search';
+import IconButton from '@mui/material/IconButton';
 
 import BasicModal from '../components/Modal.jsx';
 import LoanList from '../components/List/LoanList.jsx';
@@ -33,12 +43,15 @@ function LoanPage() {
   const [loan, setLoan] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'warning' });
+
+  const [dateRange, setDateRange] = useState([null, null]);
 
   const [filters, setFilters] = useState({
     idLoan: '',
     customer: '',
     state: ''
-  })
+  });
 
   /* Cargamos los prestamos */
   const fetchLoan = async () => {
@@ -86,12 +99,40 @@ function LoanPage() {
     resetPage();
   };
 
+  const handleDateChange = (newValue) => {
+    setDateRange(newValue);
+  };
+
+  const handleDateFilter = async () => {
+    const startDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DD') : '';
+    const endDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DD') : '';
+
+    if (!startDate || !endDate) {
+      setAlertConfig({ open: true, message: 'Por favor selecciona ambas fechas', type: 'warning' });
+      return;
+    }
+    setLoading(true);
+    try {
+      const response = await loanServices.loanActiveAndExpireFilterDate(startDate, endDate);
+      setLoan(response.data || []);
+      resetPage();
+    } catch (err) {
+      console.error("Error al filtrar préstamos por fecha", err);
+      setError("Error al aplicar el filtro de fechas.");
+      setLoan([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleClearFilters = () => {
     setFilters({
       idLoan: '',
       customer: '',
       state: ''
     });
+    setDateRange([null, null]);
+    fetchLoan();
     resetPage();
   };
 
@@ -151,7 +192,7 @@ function LoanPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 2 }}>
         <Grid container spacing={1} sx={{ flexGrow: 1 }}>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={2}>
             <TextField
               fullWidth
               label="Buscar por Id"
@@ -164,7 +205,7 @@ function LoanPage() {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={2}>
             <FormControl fullWidth size="small">
               <InputLabel>Estado</InputLabel>
               <Select
@@ -181,7 +222,7 @@ function LoanPage() {
             </FormControl>
           </Grid>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={12} sm={6} md={3}>
             <FormControl fullWidth size="small">
               <InputLabel>Cliente</InputLabel>
               <Select
@@ -206,18 +247,49 @@ function LoanPage() {
             </FormControl>
           </Grid>
 
-        </Grid>
+          <Grid item xs={12} sm={6} md={5}>
+            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
+                  <DateRangePicker
+                    value={dateRange}
+                    onChange={handleDateChange}
+                    slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                    localeText={{ start: 'Desde', end: 'Hasta' }}
+                  />
+                </DemoContainer>
+              </LocalizationProvider>
 
-        <Button
-          variant="outlined"
-          color="secondary"
-          startIcon={<ClearIcon />}
-          onClick={handleClearFilters}
-          sx={{ height: 40, whiteSpace: 'nowrap' }}
-        >
-          Limpiar Filtros
-        </Button>
+              <IconButton
+                onClick={handleDateFilter}
+                sx={{
+                  color: '#4E7D10',
+                  '&:hover': {
+                    filter: 'drop-shadow(0 0 10px #4E7D10)',
+                  },
+                }}
+                title="Filtrar"
+              >
+                <FilterAltIcon />
+              </IconButton>
+              <IconButton
+                onClick={handleClearFilters}
+                sx={{
+                  color: '#4E7D10',
+                  '&:hover': {
+                    filter: 'drop-shadow(0 0 10px #4E7D10)',
+                  },
+                }}
+                title="Limpiar"
+              >
+                <ClearIcon />
+              </IconButton>
+            </Box>
+          </Grid>
+
+        </Grid>
       </Box>
+
       <div className='table-container'>
         <LoanList
           loans={itemsCurrentPage ?? []}
@@ -247,14 +319,28 @@ function LoanPage() {
               label="Filas"
               onChange={handleItemsPerPageChange}
             >
+              <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={25}>25</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={15}>15</MenuItem>
             </Select>
           </FormControl>
         </Stack>
       </div>
 
+      <Snackbar
+        open={alertConfig.open}
+        autoHideDuration={4000}
+        onClose={() => setAlertConfig({ ...alertConfig, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setAlertConfig({ ...alertConfig, open: false })}
+          severity={alertConfig.type}
+          sx={{ width: '100%' }}
+        >
+          {alertConfig.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 }

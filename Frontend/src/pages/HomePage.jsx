@@ -7,184 +7,250 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   CircularProgress,
-  styled
+  TextField,
+  Button,
+  Snackbar,
+  Alert,
+  IconButton
 } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import logo from '../image/logo.png';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ClearIcon from '@mui/icons-material/Clear';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import loanService from '../services/loan.services';
 import { StyledTableHead, StyledHeaderCell, StyledBodyRow } from '../components/Styles/TableStyles';
 import Grafic from '../components/grafic';
 import customerService from '../services/customer.services';
 
-
 const HomePage = () => {
   const [topTools, setTopTools] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'success' });
   const [totalCustomers, setTotalCustomers] = useState(0);
-  const [activeCustomers, setActiveCustomers] = useState(0);
+  const [activeCustomers, setActiveCustomers] = useState(0); // Mantenemos por si lo necesitas
   const [totalLoans, setTotalLoans] = useState(0);
+  const [expiredLoans, setExpiredLoans] = useState(0);
+  const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'warning' });
+  const [dateRange, setDateRange] = useState([null, null]);
 
-  const handleCloseAlert = () => {
-    setAlertConfig({ open: false, message: '', type: 'success' });
+  const fetchData = async (
+    start = dateRange[0] ? dateRange[0].format('YYYY-MM-DD') : '',
+    end = dateRange[1] ? dateRange[1].format('YYYY-MM-DD') : ''
+  ) => {
+    setLoading(true);
+    try {
+      if (start && end) {
+        const [resTotal, resActive, resLoans, resExpired, resTop] = await Promise.all([
+          customerService.countCustomer(),
+          customerService.countActiveCustomers(),
+          loanService.countActiveLoansByDeliveryDateBetween(start, end),
+          loanService.countExpiredLoansByDeliveryDateBetween(start, end),
+          loanService.getTopToolsByDeliveryDateBetween(start, end)
+        ]);
+        setTotalCustomers(resTotal.data || 0);
+        setActiveCustomers(resActive.data || 0);
+        setTotalLoans(resLoans.data || 0);
+        setExpiredLoans(resExpired.data || 0);
+        setTopTools(resTop.data || []);
+      } else {
+        const [resTotal, resActive, resLoans, resExpired, resTop] = await Promise.all([
+          customerService.countCustomer(),
+          customerService.countActiveCustomers(),
+          loanService.countActiveLoans(),
+          loanService.countExpiredLoans(),
+          loanService.getTopTools()
+        ]);
+        setTotalCustomers(resTotal.data || 0);
+        setActiveCustomers(resActive.data || 0);
+        setTotalLoans(resLoans.data || 0);
+        setExpiredLoans(resExpired.data || 0);
+        setTopTools(resTop.data || []);
+      }
+    } catch (error) {
+      console.error("Error cargando datos", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    const fetchTotalCustomers = async () => {
-      try {
-        const response = await customerService.countCustomer();
-        setTotalCustomers(response.data || 0);
-      } catch (error) {
-        console.error("Error cargando total de clientes", error);
-      }
-    };
-    fetchTotalCustomers();
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchActiveCustomers = async () => {
-      try {
-        const response = await customerService.countActiveCustomers();
-        setActiveCustomers(response.data || 0);
-      } catch (error) {
-        console.error("Error cargando clientes activos", error);
-      }
-    };
-    fetchActiveCustomers();
-  }, []);
+  const handleDateChange = (newValue) => {
+    setDateRange(newValue);
+  };
 
-  useEffect(() => {
-    const fetchTotalLoans = async () => {
-      try {
-        const response = await loanService.countActiveLoans();
-        setTotalLoans(response.data || 0);
-      } catch (error) {
-        console.error("Error cargando préstamos activos", error);
-      }
-    };
-    fetchTotalLoans();
-  }, []);
+  const handleDateFilter = () => {
+    if (!dateRange[0] || !dateRange[1]) {
+      setAlertConfig({ open: true, message: 'Por favor selecciona ambas fechas', type: 'warning' });
+      return;
+    }
+    fetchData(dateRange[0].format('YYYY-MM-DD'), dateRange[1].format('YYYY-MM-DD'));
+  };
 
-  useEffect(() => {
-    const fetchTopTools = async () => {
-      try {
-        const response = await loanService.getTopTools();
-        setTopTools(response.data || []);
-      } catch (error) {
-        console.error("Error cargando reporte de herramientas", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTopTools();
-  }, []);
+  const handleClearFilters = () => {
+    setDateRange([null, null]);
+    fetchData('', '');
+  };
 
   const slotStyle = {
     display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 2,
-    bgcolor: '#eeeeeeff',
+    bgcolor: '#ffffffff',
     color: '#4E7D10',
     fontWeight: 600,
+    textAlign: 'center',
+    border: '1px solid #c4e09fff',
+    boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
   };
 
   if (loading) {
     return (
-      <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', bgcolor: '#ffffff' }}>
-        <CircularProgress size={60} sx={{ color: '#4E7D10', mb: 2 }} />
-        <Typography variant="h6" color="text.secondary">
-          Cargando panel principal...
-        </Typography>
+      <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <CircularProgress size={60} sx={{ color: '#4E7D10' }} />
       </Box>
     );
   }
 
   return (
-    <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', bgcolor: '#ffffff', boxSizing: 'border-box', padding: { xs: 2, md: 3 }, gap: 2 }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(6, 1fr)',
+        gridTemplateRows: '0.5fr repeat(6, 1fr)',
+        gap: 2,
+        width: '100%',
+        height: '100%',
+        bgcolor: '#ffffff',
+        padding: 3,
+        boxSizing: 'border-box'
+      }}
+    >
+      {/* div1: Cabecera (Fila superior completa) */}
+      <Box sx={{ gridArea: '1 / 1 / 2 / 7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Reporte de herramientas {dateRange[0] && dateRange[1] ? dateRange[0].format('DD/MM/YY') + ' - ' + dateRange[1].format('DD/MM/YY') : ''}</Typography>
 
-      {/* Fila 1: métricas */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 2, flexShrink: 0 }}>
-        <Box sx={{ ...slotStyle, p: 3, borderRadius: 2 }}>
-          Clientes total
-          <Typography variant="h6" color="text.secondary">
-            {totalCustomers}
-          </Typography>
-        </Box>
-        <Box sx={{ ...slotStyle, p: 3, borderRadius: 2 }}>
-          Clientes activos
-          <Typography variant="h6" color="text.secondary">
-            {activeCustomers}
-          </Typography>
-        </Box>
-        <Box sx={{ ...slotStyle, p: 3, borderRadius: 2 }}>
-          Préstamos activos
-          <Typography variant="h6" color="text.secondary">
-            {totalLoans}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/* Fila 2: tabla + panel lateral — toma el espacio restante */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 2, flexGrow: 1, minHeight: 0 }}>
-
-        {/* Tabla: scroll interno con altura máxima fija */}
-        <Box sx={{ minHeight: 0 }}>
-          <TableContainer
-            component={Paper}
+        {/* Filtro */}
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
+              <DateRangePicker
+                value={dateRange}
+                onChange={handleDateChange}
+                slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                localeText={{ start: 'Desde', end: 'Hasta' }}
+              />
+            </DemoContainer>
+          </LocalizationProvider>
+          <IconButton
+            onClick={handleDateFilter}
             sx={{
-              borderRadius: '10px',
-              overflow: 'hidden',
-              boxShadow: 'none',
-              border: '1px solid #e0e0d8',
+              color: '#4E7D10',
+              '&:hover': {
+                filter: 'drop-shadow(0 0 10px #4E7D10)',
+              },
             }}
+            title="Filtrar"
           >
-            <Table sx={{ minWidth: 400 }} aria-label="top tools table">
-              <StyledTableHead>
-                <TableRow>
-                  <StyledHeaderCell align="center">Posición</StyledHeaderCell>
-                  <StyledHeaderCell align="center">Herramienta</StyledHeaderCell>
-                  <StyledHeaderCell align="center">Préstamos</StyledHeaderCell>
-                </TableRow>
-              </StyledTableHead>
-              <TableBody>
-                {topTools.length > 0 ? (
-                  topTools.map((row, index) => (
-                    <StyledBodyRow key={index}>
-                      <TableCell align="center">{index + 1}</TableCell>
-                      <TableCell align="center">{row.toolName}</TableCell>
-                      <TableCell align="center" sx={{ fontWeight: 'bold' }}>
-                        {row.usageCount}
-                      </TableCell>
-                    </StyledBodyRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={3} align="center" sx={{ py: 5 }}>
-                      <InfoOutlinedIcon sx={{ fontSize: 40, color: 'text.secondary', mb: 1 }} />
-                      <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                        No se han registrado préstamos de herramientas aún.
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        A medida que se realicen préstamos, aquí verás las herramientas más solicitadas.
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
-
-        {/* Panel lateral: gráfico de herramientas */}
-        <Box sx={{ borderRadius: 2, minHeight: 0 }}>
-          <Grafic data={topTools} />
+            <FilterAltIcon />
+          </IconButton>
+          <IconButton
+            onClick={handleClearFilters}
+            sx={{
+              color: '#4E7D10',
+              '&:hover': {
+                filter: 'drop-shadow(0 0 10px #4E7D10)',
+              },
+            }}
+            title="Limpiar"
+          >
+            <ClearIcon />
+          </IconButton>
         </Box>
       </Box>
 
+      {/* Top Stats Area */}
+      <Box sx={{ gridArea: '2 / 1 / 3 / 5', display: 'flex', gap: 2 }}>
+        {/* Préstamos activos */}
+        <Box sx={{ ...slotStyle, flex: 1, gridArea: 'unset' }}>
+          <Typography variant="caption">Préstamos activos</Typography>
+          <Typography variant="h5">{totalLoans}</Typography>
+        </Box>
+        {/* Préstamos vencidos */}
+        <Box sx={{ ...slotStyle, flex: 1, gridArea: 'unset' }}>
+          <Typography variant="caption" sx={{ color: '#d32f2f' }}>Préstamos vencidos</Typography>
+          <Typography variant="h5" sx={{ color: '#d32f2f' }}>{expiredLoans}</Typography>
+        </Box>
+      </Box>
+
+      {/* div4: Ranking (Tabla - Lado derecho alto) */}
+      <Box sx={{ gridArea: '2 / 5 / 8 / 7', minHeight: 0 }}>
+        <TableContainer
+          component={Paper}
+          sx={{
+            height: '100%',
+            borderRadius: '10px',
+            border: '1px solid #c4e09fff',
+            overflow: 'auto',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          <Table aria-label="simple table">
+            <StyledTableHead>
+              <TableRow>
+                <StyledHeaderCell align="center">Pos.</StyledHeaderCell>
+                <StyledHeaderCell align="center">Herramienta</StyledHeaderCell>
+                <StyledHeaderCell align="center">Uso</StyledHeaderCell>
+              </TableRow>
+            </StyledTableHead>
+            <TableBody>
+              {topTools.length > 0 ? (
+                topTools.map((row, index) => (
+                  <StyledBodyRow key={index}>
+                    <TableCell align="center">{index + 1}</TableCell>
+                    <TableCell align="center">{row.toolName}</TableCell>
+                    <TableCell align="center" sx={{ fontWeight: 'bold' }}>{row.usageCount}</TableCell>
+                  </StyledBodyRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={3} align="center" sx={{ py: 5 }}>
+                    <Typography variant="body2" color="text.secondary">Sin datos</Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+
+      {/* div5: Gráfico (Área central/inferior izquierda) */}
+      <Box sx={{ gridArea: '3 / 1 / 8 / 5', bgcolor: '#ffffffff', borderRadius: 2, minHeight: 0 }}>
+        <Grafic data={topTools} />
+      </Box>
+
+      <Snackbar
+        open={alertConfig.open}
+        autoHideDuration={4000}
+        onClose={() => setAlertConfig({ ...alertConfig, open: false })}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setAlertConfig({ ...alertConfig, open: false })}
+          severity={alertConfig.type}
+          sx={{ width: '100%' }}
+        >
+          {alertConfig.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

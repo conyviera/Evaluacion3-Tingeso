@@ -150,8 +150,11 @@ const LoanList = ({ loans, loading, error, requestSort, sortConfig, onRetry }) =
                   }</MuiTableCell>
                   <MuiTableCell align="center">{loan.deliveryDate}</MuiTableCell>
                   <MuiTableCell align="center">{loan.returnDate}</MuiTableCell>
-                  <MuiTableCell align="center">{loan.rentalAmount}</MuiTableCell>
-                  <MuiTableCell align="center">{loan.state}</MuiTableCell>
+                  <MuiTableCell align="center">$ {loan.rentalAmount}</MuiTableCell>
+                  <MuiTableCell align="center">{loan.state === 'ACTIVE' ? 'ACTIVO' :
+                    loan.state === 'RETURNED' ? 'DEVUELTO' :
+                      loan.state === 'EXPIRED' ? 'VENCIDO' :
+                        'OTRO'}</MuiTableCell>
                   <MuiTableCell align="center">
                     {<IconButton
                       onClick={() => handleRowClick(loan.idLoan)}

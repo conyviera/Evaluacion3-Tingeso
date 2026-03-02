@@ -204,6 +204,22 @@ public class LoanController {
         return ResponseEntity.ok(loanService.getTopToolsReport());
     }
 
+    @GetMapping("/reportDate")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> getTopToolsReportDate(@RequestParam("startDate") String startDateParam,
+                                                           @RequestParam("endDate") String endDateParam) {
+        try {
+            LocalDate startDate = LocalDate.parse(startDateParam);
+            LocalDate endDate = LocalDate.parse(endDateParam);
+
+            return ResponseEntity.ok(loanService.getTopToolsReportDate(startDate, endDate));
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
     // Entrega todos los prestamos
     @GetMapping("/getAllLoans")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
@@ -214,13 +230,73 @@ public class LoanController {
         return ResponseEntity.ok(loans);
     }
 
-    @GetMapping("/countLoans")
+    @GetMapping("/countLoansActive")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public ResponseEntity<?> countActiveLoans() {
 
-        int number = loanService.countLoansByState();
+        int number = loanService.countLoansByState("ACTIVE");
+        return ResponseEntity.ok(number);
+    }
+
+    @GetMapping("/countLoansExpired")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> countExpiredLoans() {
+
+        int number = loanService.countLoansByState("EXPIRED");
 
         return ResponseEntity.ok(number);
     }
+
+    @GetMapping("/loanActiveAndExpireFilterDate")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> loanActiveAndExpireFilterDate(@RequestParam("startDate") String startDateParam,
+            @RequestParam("endDate") String endDateParam) {
+        try {
+            LocalDate startDate = LocalDate.parse(startDateParam);
+            LocalDate endDate = LocalDate.parse(endDateParam);
+
+            List<LoanEntity> loans = loanService.loanActiveAndExpireFilterDate(startDate, endDate);
+            return ResponseEntity.ok(loans);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/countByDeliveryDateBetweenActive")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> countByDeliveryDateBetweenActive (@RequestParam("startDate") String startDateParam,
+                                                           @RequestParam("endDate") String endDateParam) {
+        try {
+            LocalDate startDate = LocalDate.parse(startDateParam);
+            LocalDate endDate = LocalDate.parse(endDateParam);
+
+            int number = loanService.countLoansByDeliveryDateBetweenAndState(startDate, endDate, "ACTIVE");
+            return ResponseEntity.ok(number);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/countByDeliveryDateBetweenExpired")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public ResponseEntity<?> countByDeliveryDateBetweenExpired (@RequestParam("startDate") String startDateParam,
+                                                               @RequestParam("endDate") String endDateParam) {
+        try {
+            LocalDate startDate = LocalDate.parse(startDateParam);
+            LocalDate endDate = LocalDate.parse(endDateParam);
+
+            int number = loanService.countLoansByDeliveryDateBetweenAndState(startDate, endDate, "EXPIRED");
+            return ResponseEntity.ok(number);
+
+        } catch (Exception e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
+
 
 }

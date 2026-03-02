@@ -12,7 +12,6 @@ import MainLayout from './components/SideMenu';
 import DeactivateUnusedTool from './components/Form/DeactivateUnusedToolForm';
 import UpdateTypeToolForm from './components/Form/UpdateTypeToolForm';
 import DebtList from './components/List/DebtList';
-import GlobalSearchPage from './pages/GlobalSearchPage';
 import NotFoundPage from './pages/NotFoundPage';
 function App() {
   const { keycloak, initialized } = useKeycloak();
@@ -124,15 +123,6 @@ function App() {
           element={
             <PrivateRoute rolesAllowed={['ADMIN']}>
               <DebtList />
-            </PrivateRoute>
-          }
-        />
-
-        <Route
-          path="search"
-          element={
-            <PrivateRoute rolesAllowed={["USER", "ADMIN"]}>
-              <GlobalSearchPage />
             </PrivateRoute>
           }
         />

@@ -23,7 +23,7 @@ const CustomTooltip = ({ active, payload, label }) => {
                     borderRadius: 2,
                     px: 1.5,
                     py: 1,
-                    boxShadow: 2,
+                    boxShadow: 2
                 }}
             >
                 <Typography variant="body2" sx={{ fontWeight: 700, color: '#4E7D10' }}>
@@ -53,9 +53,11 @@ const Grafic = ({ data = [] }) => {
                 flexDirection: 'column',
                 gap: 1,
                 p: 2,
-                bgcolor: '#eeeeeeff',
+                bgcolor: '#ffffffff',
                 borderRadius: 2,
+                border: '1px solid #c4e09fff',
                 boxSizing: 'border-box',
+                boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
             }}
         >
             <Typography

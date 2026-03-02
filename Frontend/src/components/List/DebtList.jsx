@@ -117,8 +117,12 @@ const DebtList = ({ }) => {
                   key={debtUnitary.idDebts}
                 >
                   <MuiTableCell align="center">{debtUnitary.idDebts}</MuiTableCell>
-                  <MuiTableCell align="center">{debtUnitary.type}</MuiTableCell>
-                  <MuiTableCell align="center">{debtUnitary.amount}</MuiTableCell>
+                  <MuiTableCell align="center">{
+                    debtUnitary.type === 'ARREARS' ? 'ATRASO' :
+                      debtUnitary.type === 'DAMAGES' ? 'DAÑOS' :
+                        'OTRO'}
+                  </MuiTableCell>
+                  <MuiTableCell align="center">$ {debtUnitary.amount}</MuiTableCell>
                   <MuiTableCell align="center">{debtUnitary.creationDate}</MuiTableCell>
                   <MuiTableCell align="center">
                     {debtUnitary.paymentDate ? (
@@ -147,9 +151,9 @@ const DebtList = ({ }) => {
                   </MuiTableCell>
                   <MuiTableCell align="center">
                     {debtUnitary.status === 'PAID' ? (
-                      <span style={{ color: 'green' }}>Pagada</span>
+                      <span style={{ color: 'green' }}>PAGADA</span>
                     ) : (
-                      <span style={{ color: 'red' }}>Pendiente</span>
+                      <span style={{ color: 'red' }}>PENDIENTE</span>
                     )}
                   </MuiTableCell>
                   <MuiTableCell align="center">
@@ -190,9 +194,9 @@ const DebtList = ({ }) => {
                 label="Filas"
                 onChange={handleItemsPerPageChange}
               >
+                <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={25}>25</MenuItem>
-                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
               </Select>
             </FormControl>
           </Stack>

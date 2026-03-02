@@ -5,7 +5,6 @@ import Stack from '@mui/material/Stack';
 import { Box, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, Typography, Snackbar, Alert } from '@mui/material';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import SearchIcon from '@mui/icons-material/Search';
-import ClearIcon from '@mui/icons-material/Clear';
 
 import BasicModal from '../components/Modal.jsx';
 import kardexServices from '../services/kardex.services.js'
@@ -15,6 +14,14 @@ import { useSort } from '../hooks/useSort';
 import { getErrorMessage } from '../utils/errorHandler.js';
 import { buttonPrimary } from '../components/Styles/ButtonStyles.jsx';
 import { paginationStyles } from '../components/Styles/PaginationStyles.jsx';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import dayjs from 'dayjs';
 
 function KardexPage() {
 
@@ -24,17 +31,13 @@ function KardexPage() {
     const [error, setError] = useState(null);
     const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'warning' });
 
-    const [dateRange, setDateRange] = useState({
-        start: '',
-        end: ''
-    });
+    const [dateRange, setDateRange] = useState([null, null]);
 
     const fetchKardex = async () => {
         setLoading(true);
         setError(null);
         try {
             const response = await kardexServices.getAllMove();
-            setKardex(response.data || []);
             setKardex(response.data || []);
         } catch (err) {
             console.error("Error al obtener los movimientos", err);
@@ -47,100 +50,102 @@ function KardexPage() {
 
     useEffect(() => { fetchKardex(); }, []);
 
-    const handleDateChange = (e) => {
-        const { name, value } = e.target;
-        setDateRange({ ...dateRange, [name]: value });
+    const handleDateChange = (newValue) => {
+        setDateRange(newValue);
     };
 
 
     const handleFilter = async () => {
-        if (!dateRange.start || !dateRange.end) {
+        const startDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DD') : '';
+        const endDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DD') : '';
+
+        if (!startDate || !endDate) {
             setAlertConfig({ open: true, message: 'Por favor selecciona ambas fechas', type: 'warning' });
             return;
         }
 
+        setLoading(true);
         try {
-            const response = await kardexServices.getAllKardexByDate(dateRange);
+            const response = await kardexServices.getAllKardexByDate({ start: startDate, end: endDate });
             setKardex(response.data || []);
-            setKardex(response.data || []);
+            if (resetPage) resetPage();
         } catch (error) {
             console.error("Error al filtrar movimientos", error);
             setError("Error al aplicar el filtro de fechas. Verifica que las fechas sean correctas e intenta nuevamente.");
+            setKardex([]);
+        } finally {
+            setLoading(false);
         }
     };
 
 
     const handleClear = () => {
-        setDateRange({ start: '', end: '' });
+        setDateRange([null, null]);
         fetchKardex();
+        if (resetPage) resetPage();
     };
 
 
     const { sortedItems, requestSort, sortConfig } = useSort(kardex, { key: 'idKardex', direction: 'asc' });
 
-    const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange } = usePagination(sortedItems);
+    const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange, resetPage } = usePagination(sortedItems);
 
     return (
-        <Box sx={{ padding: { xs: 2, md: 3 } }}>
+        <Box sx={{ padding: { xs: 2, md: 3 }, pt: { xs: 1, md: 1 } }}>
 
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                <Typography variant="h5" component="h1" sx={{ mb: 2, fontWeight: 'bold' }}>
+                <Typography variant="h5" component="h1" sx={{ fontWeight: 'bold' }}>
                     Historial de Movimientos
                 </Typography>
-            </Box>
 
-            <Box
-                sx={{
-                    display: 'flex',
-                    gap: 2,
-                    mb: 3,
-                    backgroundColor: '#ffffffff',
-                    padding: 2,
-                    borderRadius: 2,
-                    alignItems: 'center',
-                    flexWrap: 'wrap'
-                }}
-            >
-                <TextField
-                    label="Desde"
-                    type="date"
-                    name="start"
-                    value={dateRange.start}
-                    onChange={handleDateChange}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    sx={{ backgroundColor: 'white' }}
-                />
-
-                <TextField
-                    label="Hasta"
-                    type="date"
-                    name="end"
-                    value={dateRange.end}
-                    onChange={handleDateChange}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    sx={{ backgroundColor: 'white' }}
-                />
-
-                <Button
-                    variant="contained"
-                    startIcon={<SearchIcon />}
-                    onClick={handleFilter}
-                    disabled={!dateRange.start || !dateRange.end}
-                    sx={buttonPrimary}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        backgroundColor: '#ffffffff',
+                        padding: 2,
+                        borderRadius: 2,
+                        alignItems: 'center',
+                        flexWrap: 'wrap'
+                    }}
                 >
-                    Filtrar
-                </Button>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
+                            <DateRangePicker
+                                value={dateRange}
+                                onChange={handleDateChange}
+                                slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                                localeText={{ start: 'Desde', end: 'Hasta' }}
+                            />
+                        </DemoContainer>
+                    </LocalizationProvider>
 
-                <Button
-                    variant="outlined"
-                    startIcon={<ClearIcon />}
-                    onClick={handleClear}
-                    sx={buttonPrimary}
-                >
-                    Limpiar
-                </Button>
+                    <IconButton
+                        onClick={handleFilter}
+                        sx={{
+                            color: '#4E7D10',
+                            '&:hover': {
+                                filter: 'drop-shadow(0 0 10px #4E7D10)',
+                            },
+                        }}
+                        title="Filtrar"
+                    >
+                        <FilterAltIcon />
+                    </IconButton>
+                    <IconButton
+                        onClick={handleClear}
+                        sx={{
+                            color: '#4E7D10',
+                            '&:hover': {
+                                filter: 'drop-shadow(0 0 10px #4E7D10)',
+                            },
+                        }}
+                        title="Limpiar"
+                    >
+                        <ClearIcon />
+                    </IconButton>
+                </Box>
+
             </Box>
 
             {error && (
@@ -178,9 +183,9 @@ function KardexPage() {
                             label="Filas"
                             onChange={handleItemsPerPageChange}
                         >
+                            <MenuItem value={5}>5</MenuItem>
                             <MenuItem value={10}>10</MenuItem>
-                            <MenuItem value={25}>25</MenuItem>
-                            <MenuItem value={50}>50</MenuItem>
+                            <MenuItem value={15}>15</MenuItem>
                         </Select>
                     </FormControl>
                 </Stack>

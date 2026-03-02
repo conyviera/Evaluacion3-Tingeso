@@ -228,9 +228,9 @@ function ToolInventoryPage() {
               label="Filas"
               onChange={handleItemsPerPageChange}
             >
+              <MenuItem value={5}>5</MenuItem>
               <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={25}>25</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
+              <MenuItem value={15}>15</MenuItem>
             </Select>
           </FormControl>
         </Stack>

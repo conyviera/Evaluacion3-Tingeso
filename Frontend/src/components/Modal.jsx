@@ -33,7 +33,7 @@ function Modal({ button, children }) {
         onClose={handleClose}
       >
         <Box sx={style}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <IconButton
               aria-label="close"
               onClick={handleClose}
@@ -44,13 +44,8 @@ function Modal({ button, children }) {
               <CloseIcon />
             </IconButton>
           </Box>
-          <Box sx={{ maxHeight: '70vh', overflowY: 'auto' }}>
+          <Box sx={{ maxHeight: '100%', overflowY: 'auto' }}>
             {children}
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 3 }}>
-            <Button onClick={handleClose} variant="outlined" color="secondary">
-              Cerrar
-            </Button>
           </Box>
         </Box>
       </MuiModal>

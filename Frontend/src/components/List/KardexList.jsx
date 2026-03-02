@@ -141,7 +141,13 @@ const KardexList = ({ kardex, loading, error, requestSort, sortConfig, onRetry }
                 >
                   <MuiTableCell align="center">{move.idKardex}</MuiTableCell>
                   <MuiTableCell align="center">{formatDateTime(move.date)}</MuiTableCell>
-                  <MuiTableCell align="center">{move.typeMove}</MuiTableCell>
+                  <MuiTableCell align="center">{move.typeMove === 'LOAN' ? 'PRÉSTAMO'
+                    : move.typeMove === 'TOOL_RETURN' ? 'DEVOLUCIÓN'
+                      : move.typeMove === 'TOOL_REPAIR' ? 'REPARACIÓN'
+                        : move.typeMove === 'TOOL_REGISTER' ? 'REGISTRO DE HERRAMIENTA'
+                          : move.typeMove === 'TOOL_REMOVE' ? 'ELIMINACIÓN DE HERRAMIENTA'
+                            : move.typeMove === 'DECOMMISSIONED' ? 'DADA DE BAJA'
+                              : 'OTRO'}</MuiTableCell>
                   <MuiTableCell align="center">{move.quantity}</MuiTableCell>
                   <MuiTableCell align="center">
                     {(Array.from(

@@ -320,8 +320,19 @@ public class LoanService {
      * RF6.1: List active loans and their status (ACTIVE, EXPIRED)
      * @return List
      */
-    public List loanActiveAndExpire(){
+    public List<LoanEntity> loanActiveAndExpire(){
         return loanRepo.findByStateIsNot("RETURNED");
+    }
+
+    /**
+     * Filtrar prestamos por rango de fecha
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List<LoanEntity> loanActiveAndExpireFilterDate(LocalDate startDate, LocalDate endDate){
+        List<LoanEntity> loans= loanRepo.findByDeliveryDateBetween(startDate, endDate);
+        return loans;
     }
 
     /**
@@ -347,6 +358,28 @@ public class LoanService {
         return report;
     }
 
+    /**
+     * RF 6.3: Report on the most frequently borrowed tools (DATE)
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public List<Map<String, Object>> getTopToolsReportDate(LocalDate startDate, LocalDate endDate) {
+
+        List<Object[]> results = loanRepo.countLoansByTypeInDateRange(startDate, endDate);
+
+        List<Map<String, Object>> report = new ArrayList<>();
+
+        for (Object[] row : results) {
+            Map<String, Object> item = new HashMap<>();
+            item.put("toolName", row[0]);
+            item.put("usageCount", row[1]);
+            report.add(item);
+        }
+
+        return report;
+    }
+
 
     //-------------------------Utility-----------------------------------------------
 
@@ -360,9 +393,24 @@ public class LoanService {
         return loanRepo.findAll();
     }
 
-    public int countLoansByState(){
-        return loanRepo.countLoansByState("ACTIVE");
+    /**
+     * Utility 2:
+     * @return
+     */
+    public int countLoansByState(String state){
+        return loanRepo.countLoansByState(state);
     }
+
+    /**
+     * Utility 3:
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public int countLoansByDeliveryDateBetweenAndState(LocalDate startDate, LocalDate endDate, String state){
+        return loanRepo.countByDeliveryDateBetweenAndState(startDate, endDate, state);
+    }
+
 
 
 }

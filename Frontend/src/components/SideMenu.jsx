@@ -3,6 +3,9 @@ import { styled, useTheme } from "@mui/material/styles";
 import { Box, Toolbar, AppBar as MuiAppBar, List, IconButton, ListItemButton, ListItemIcon, ListItemText, Typography, Breadcrumbs, InputBase, alpha } from '@mui/material';
 import MuiDrawer from "@mui/material/Drawer";
 import { useNavigate, Outlet, useLocation } from "react-router-dom";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useKeycloak } from '@react-keycloak/web';
 
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -119,7 +122,7 @@ const routeParents = {
   '/DeacticateUnusedTool': '/ToolInventoryPage',
   '/MovementsTool': '/ToolInventoryPage',
   '/UpdateTypeTool': '/ToolInventoryPage',
-  '/DebtList': '/CustomerManagementPage',
+  '/DebtList': '/LoanPage',
 };
 
 function getBreadcrumbs(pathname) {
@@ -158,9 +161,30 @@ export default function MainLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchQuery, setSearchQuery] = React.useState('');
+  const { keycloak } = useKeycloak();
 
   const breadcrumbs = getBreadcrumbs(location.pathname);
   const isHome = location.pathname === '/';
+
+  const userName = keycloak?.tokenParsed?.preferred_username || keycloak?.tokenParsed?.name || "Usuario";
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    handleMenuClose();
+    if (keycloak) {
+      keycloak.logout();
+    }
+  };
 
   return (
 
@@ -170,7 +194,7 @@ export default function MainLayout() {
         <DrawerHeader>
           <Box
             component="img"
-            sx={{ height: 65, my: 1 }}
+            sx={{ height: 100, my: 1 }}
             alt="Logo"
             src={logo}
           />
@@ -291,27 +315,43 @@ export default function MainLayout() {
                 })}
               </Breadcrumbs>
 
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase
-                  placeholder="Búsqueda global..."
-                  inputProps={{ 'aria-label': 'search' }}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && searchQuery.trim()) {
-                      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-                      setSearchQuery('');
-                    }
-                  }}
-                />
-              </Search>
-
-              <IconButton color="inherit" aria-label="Login">
+              <IconButton
+                color="inherit"
+                onClick={handleMenuClick}
+                aria-controls={open ? 'account-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                sx={{ display: 'flex', alignItems: 'center', gap: 1, borderRadius: 2 }}
+              >
+                <Typography variant="body1" sx={{ fontWeight: 500, fontSize: '1rem', textTransform: 'capitalize' }}>
+                  {userName}
+                </Typography>
                 <AccountCircleIcon />
               </IconButton>
+              <Menu
+                id="account-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
+                    mt: 1.5,
+                  },
+                }}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+              </Menu>
             </Toolbar>
           </MuiAppBar>
 

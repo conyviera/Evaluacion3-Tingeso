@@ -134,9 +134,9 @@ const CustomerList = ({ customers, loading, error, requestSort, sortConfig, onRe
                   <MuiTableCell align="center">{cust.email}</MuiTableCell>
                   <MuiTableCell align="center">
                     {cust.state === 'ACTIVE' ? (
-                      <span style={{ color: 'green' }}>Activo</span>
+                      <span style={{ color: 'green' }}>ACTIVO</span>
                     ) : (
-                      <span style={{ color: 'red' }}>Restringido</span>
+                      <span style={{ color: 'red' }}>RESTRINGIDO</span>
                     )}
                   </MuiTableCell>
                 </StyledBodyRow>

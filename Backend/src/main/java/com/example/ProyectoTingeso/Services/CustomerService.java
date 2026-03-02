@@ -149,6 +149,8 @@ public class CustomerService {
         return number;
     }
 
+
+
     public long countAllCustomer(){
         long  number= customerRepo.count();
         return number;

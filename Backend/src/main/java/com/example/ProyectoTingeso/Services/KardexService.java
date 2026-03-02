@@ -162,7 +162,6 @@ public class KardexService {
         List<ToolEntity> toolList= new ArrayList<>();
 
         TypeToolEntity typeTool= tool.getTypeTool();
-        typeTool.setStock(typeTool.getStock()-1);
 
         toolList.add(tool);
 

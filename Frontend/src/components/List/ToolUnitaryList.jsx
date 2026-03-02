@@ -20,6 +20,7 @@ import DeactivateUnusedTool from '../Form/DeactivateUnusedToolForm';
 import BasicModal from '../Modal';
 import AssessToolDamageForm from '../Form/AssessToolDamageForm';
 import { StyledTableHead, StyledHeaderCell, StyledBodyRow } from '../Styles/TableStyles';
+import { paginationStyles } from '../Styles/PaginationStyles.jsx';
 
 // COMPONENTE PRINCIPAL
 const ToolUnitaryList = () => {
@@ -94,15 +95,7 @@ const ToolUnitaryList = () => {
   return (
     <Box sx={{ padding: '16px' }}>
       <Typography variant="h5" component="h1" sx={{ mb: 2, fontWeight: 'bold' }}>
-        Herramientas Unitarias
-      </Typography>
-
-      <Typography sx={{ mb: 1 }}>
-        Nombre: {headerInfo.typeTool?.name || ''} |
-        Categoria: {headerInfo.typeTool?.category || ''} <br></br>
-        Valor de reposición: {headerInfo.typeTool?.replacementValue || ''} |
-        Tarifa diaria: {headerInfo.typeTool?.dailyRate || ''} |
-        Tarifa de deuda por atraso: {headerInfo.typeTool?.debtRate || ''}
+        Herramientas Unitarias : {headerInfo.typeTool?.name || ''} - {headerInfo.typeTool?.category || ''}
       </Typography>
 
       <Box sx={{ mb: 2, mt: 3 }}>
@@ -131,10 +124,10 @@ const ToolUnitaryList = () => {
                 onChange={handleFilterChange}
               >
                 <MenuItem value=""><em>Todos</em></MenuItem>
-                <MenuItem value="AVAILABLE">Disponible (Available)</MenuItem>
-                <MenuItem value="ON_LOAN">Prestada (On Loan)</MenuItem>
-                <MenuItem value="UNDER_REPAIR">En reparación (Under Repair)</MenuItem>
-                <MenuItem value="DECOMMISSIONED">Dada de baja (Decommissioned)</MenuItem>
+                <MenuItem value="AVAILABLE">Disponible</MenuItem>
+                <MenuItem value="ON_LOAN">Prestada</MenuItem>
+                <MenuItem value="UNDER_REPAIR">En reparación</MenuItem>
+                <MenuItem value="DECOMMISSIONED">Dada de baja</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -163,7 +156,10 @@ const ToolUnitaryList = () => {
                 itemsCurrentPage.map((toolItem) => (
                   <StyledBodyRow key={toolItem.idTool}>
                     <MuiTableCell align="center">{toolItem.idTool}</MuiTableCell>
-                    <MuiTableCell align="center">{toolItem.state}</MuiTableCell>
+                    <MuiTableCell align="center">{toolItem.state === 'AVAILABLE' ? 'DISPONIBLE'
+                      : toolItem.state === 'ON_LOAN' ? 'PRESTADA'
+                        : toolItem.state === 'UNDER_REPAIR' ? 'EN REPARACIÓN'
+                          : toolItem.state === 'DECOMMISSIONED' ? 'DADA DE BAJA' : 'OTRO'}</MuiTableCell>
                     <MuiTableCell align="center">
 
                       <IconButton
@@ -238,6 +234,7 @@ const ToolUnitaryList = () => {
               onChange={handlePageChange}
               color="primary"
               variant="outlined"
+              sx={paginationStyles}
             />
           </Stack>
         </div>

@@ -22,7 +22,20 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 const MoveUnitaryList = () => {
 
   const { id } = useParams();
-  console.log('ID RECIBIDO (desde la URL):', id);
+
+  const formatDateTime = (isoString) => {
+    const d = new Date(isoString);
+    const fecha = d.toLocaleDateString('es-CL', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+    const hora = d.toLocaleTimeString('es-CL', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    return `${hora} ${fecha}`;
+  };
 
   const [movement, setMovement] = useState([]);
   const [reload, setReload] = useState(false);
@@ -160,8 +173,14 @@ const MoveUnitaryList = () => {
                 itemsCurrentPage.map((move) => (
                   <StyledBodyRow key={move.idKardex}>
                     <MuiTableCell align="center">{move.idKardex}</MuiTableCell>
-                    <MuiTableCell align="center">{move.typeMove}</MuiTableCell>
-                    <MuiTableCell align="center">{move.date}</MuiTableCell>
+                    <MuiTableCell align="center">{move.typeMove === 'LOAN' ? 'PRÉSTAMO'
+                      : move.typeMove === 'TOOL_RETURN' ? 'DEVOLUCIÓN'
+                        : move.typeMove === 'TOOL_REPAIR' ? 'REPARACIÓN'
+                          : move.typeMove === 'TOOL_REGISTER' ? 'REGISTRO DE HERRAMIENTA'
+                            : move.typeMove === 'TOOL_REMOVE' ? 'ELIMINACIÓN DE HERRAMIENTA'
+                              : move.typeMove === 'DECOMMISSIONED' ? 'DADA DE BAJA'
+                                : 'OTRO'}</MuiTableCell>
+                    <MuiTableCell align="center">{formatDateTime(move.date)}</MuiTableCell>
                     <MuiTableCell align="center">{move.loan?.idLoan || 'Sin prestamo asociado'}</MuiTableCell>
                     <MuiTableCell align="center">{move.user?.username || 'Sin usuario'}</MuiTableCell>
                   </StyledBodyRow>
@@ -189,9 +208,9 @@ const MoveUnitaryList = () => {
                 label="Filas"
                 onChange={handleItemsPerPageChange}
               >
+                <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={25}>25</MenuItem>
-                <MenuItem value={50}>50</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
               </Select>
             </FormControl>
           </Stack>
