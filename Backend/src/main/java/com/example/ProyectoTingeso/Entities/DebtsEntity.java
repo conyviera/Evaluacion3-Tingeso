@@ -50,8 +50,7 @@ public class DebtsEntity {
     private LoanEntity loan;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tool_id")
+    @JoinTable(name = "debts_tool", joinColumns = @JoinColumn(name = "debts_id"), inverseJoinColumns = @JoinColumn(name = "tool_id"))
     private List<ToolEntity> tool;
-
 
 }

@@ -5,9 +5,9 @@ import { getErrorMessage } from '../utils/errorHandler.js';
 import { Pagination } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import {
   Box,
@@ -251,12 +251,20 @@ function LoanPage() {
             <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
-                  <DateRangePicker
-                    value={dateRange}
-                    onChange={handleDateChange}
-                    slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
-                    localeText={{ start: 'Desde', end: 'Hasta' }}
-                  />
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                    <DatePicker
+                      label="Desde"
+                      value={dateRange[0]}
+                      onChange={(newValue) => handleDateChange([newValue, dateRange[1]])}
+                      slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                    />
+                    <DatePicker
+                      label="Hasta"
+                      value={dateRange[1]}
+                      onChange={(newValue) => handleDateChange([dateRange[0], newValue])}
+                      slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                    />
+                  </Box>
                 </DemoContainer>
               </LocalizationProvider>
 

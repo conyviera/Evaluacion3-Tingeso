@@ -1,0 +1,8 @@
+﻿NAME              IMAGE                              COMMAND                  SERVICE       CREATED          STATUS          PORTS
+backend-1         evaluacion3-tingeso-backend-1      "java -jar app.jar"      backend-1     22 minutes ago   Up 22 minutes   8090/tcp
+backend-lb        nginx:alpine                       "/docker-entrypoint.ÔÇª"   backend-lb    32 minutes ago   Up 39 seconds   0.0.0.0:8090->80/tcp, [::]:8090->80/tcp
+frontend-1        evaluacion3-tingeso-frontend-1     "/docker-entrypoint.ÔÇª"   frontend-1    22 minutes ago   Up 22 minutes   80/tcp
+frontend-lb       nginx:alpine                       "/docker-entrypoint.ÔÇª"   frontend-lb   32 minutes ago   Up 39 seconds   0.0.0.0:3000->80/tcp, [::]:3000->80/tcp
+keycloak-server   quay.io/keycloak/keycloak:22.0.1   "/opt/keycloak/bin/kÔÇª"   keycloak      32 minutes ago   Up 22 minutes   0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+pgadmin           dpage/pgadmin4:latest              "/entrypoint.sh"         pgadmin       32 minutes ago   Up 22 minutes   0.0.0.0:5050->80/tcp, [::]:5050->80/tcp
+postgres-db       postgres:14-alpine                 "docker-entrypoint.sÔÇª"   postgres      32 minutes ago   Up 22 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp

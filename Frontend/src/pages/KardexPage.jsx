@@ -18,9 +18,9 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers-pro/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 
 function KardexPage() {
@@ -111,12 +111,20 @@ function KardexPage() {
                 >
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
-                            <DateRangePicker
-                                value={dateRange}
-                                onChange={handleDateChange}
-                                slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
-                                localeText={{ start: 'Desde', end: 'Hasta' }}
-                            />
+                            <Box sx={{ display: 'flex', gap: 1 }}>
+                                <DatePicker
+                                    label="Desde"
+                                    value={dateRange[0]}
+                                    onChange={(newValue) => handleDateChange([newValue, dateRange[1]])}
+                                    slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                                />
+                                <DatePicker
+                                    label="Hasta"
+                                    value={dateRange[1]}
+                                    onChange={(newValue) => handleDateChange([dateRange[0], newValue])}
+                                    slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
+                                />
+                            </Box>
                         </DemoContainer>
                     </LocalizationProvider>
 
