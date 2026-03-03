@@ -53,7 +53,7 @@ INSERT INTO public.customer_entity (id_customer, email, name, phone_number, rut,
 
 
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (12000, 5000, 85000, 7, 1, 'Eléctrica', 'Taladro Percutor');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967563', 1, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967563', 1, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (1, 1, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (1, 1, 1);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (2, 1, 'AVAILABLE');
@@ -69,7 +69,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (7, 1, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (1, 7, 7);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (15000, 6000, 95000, 7, 2, 'Eléctrica', 'Esmeril Angular');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967601', 2, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967601', 2, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (8, 2, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (2, 8, 8);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (9, 2, 'AVAILABLE');
@@ -85,9 +85,9 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (14, 2, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (2, 14, 14);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (25000, 10000, 180000, 0, 3, 'Eléctrica', 'Sierra Circular');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (0, '2026-03-03 09:40:25.967627', 3, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (0, '2024-03-03 09:40:25.967627', 3, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (30000, 12000, 220000, 6, 4, 'Eléctrica', 'Rotomartillo');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967633', 4, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967633', 4, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (15, 4, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (4, 15, 15);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (16, 4, 'AVAILABLE');
@@ -101,7 +101,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (20, 4, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (4, 20, 20);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (10000, 4000, 60000, 8, 5, 'Eléctrica', 'Lijadora Orbital');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967643', 5, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967643', 5, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (21, 5, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (5, 21, 21);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (22, 5, 'AVAILABLE');
@@ -119,7 +119,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (28, 5, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (5, 28, 28);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (60000, 25000, 450000, 7, 6, 'Maquinaria', 'Generador Eléctrico');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967655', 6, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967655', 6, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (29, 6, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (6, 29, 29);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (30, 6, 'AVAILABLE');
@@ -135,7 +135,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (35, 6, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (6, 35, 35);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (45000, 18000, 320000, 6, 7, 'Maquinaria', 'Compresor de Aire');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967667', 7, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967667', 7, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (36, 7, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (7, 36, 36);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (37, 7, 'AVAILABLE');
@@ -149,7 +149,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (41, 7, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (7, 41, 41);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (75000, 30000, 550000, 7, 8, 'Maquinaria', 'Betonera');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967676', 8, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967676', 8, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (42, 8, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (8, 42, 42);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (43, 8, 'AVAILABLE');
@@ -165,7 +165,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (48, 8, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (8, 48, 48);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (55000, 22000, 400000, 6, 9, 'Eléctrica', 'Martillo Demoledor');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967690', 9, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967690', 9, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (49, 9, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (9, 49, 49);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (50, 9, 'AVAILABLE');
@@ -179,7 +179,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (54, 9, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (9, 54, 54);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (35000, 14000, 250000, 7, 10, 'Limpieza', 'Hidrolavadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967699', 10, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967699', 10, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (55, 10, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (10, 55, 55);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (56, 10, 'AVAILABLE');
@@ -195,7 +195,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (61, 10, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (10, 61, 61);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (18000, 7000, 120000, 5, 11, 'Manual', 'Escalera Extensible');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967710', 11, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967710', 11, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (62, 11, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (11, 62, 62);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (63, 11, 'AVAILABLE');
@@ -207,7 +207,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (66, 11, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (11, 66, 66);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (40000, 16000, 300000, 5, 12, 'Eléctrica', 'Soldadora Inverter');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967718', 12, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967718', 12, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (67, 12, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (12, 67, 67);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (68, 12, 'AVAILABLE');
@@ -219,7 +219,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (71, 12, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (12, 71, 71);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (20000, 8000, 140000, 6, 13, 'Eléctrica', 'Taladro Inalámbrico');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967728', 13, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967728', 13, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (72, 13, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (13, 72, 72);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (73, 13, 'AVAILABLE');
@@ -233,7 +233,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (77, 13, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (13, 77, 77);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (28000, 11000, 200000, 5, 14, 'Jardinería', 'Cortadora de Pasto');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967738', 14, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967738', 14, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (78, 14, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (14, 78, 78);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (79, 14, 'AVAILABLE');
@@ -245,7 +245,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (82, 14, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (14, 82, 82);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (30000, 12000, 220000, 8, 15, 'Jardinería', 'Desbrozadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967746', 15, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967746', 15, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (83, 15, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (15, 83, 83);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (84, 15, 'AVAILABLE');
@@ -263,7 +263,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (90, 15, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (15, 90, 90);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (15000, 6000, 90000, 6, 16, 'Eléctrica', 'Sierra Caladora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967757', 16, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967757', 16, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (91, 16, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (16, 91, 91);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (92, 16, 'AVAILABLE');
@@ -277,7 +277,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (96, 16, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (16, 96, 96);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (28000, 11000, 210000, 7, 17, 'Eléctrica', 'Sierra Sable');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967766', 17, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967766', 17, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (97, 17, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (17, 97, 97);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (98, 17, 'AVAILABLE');
@@ -293,7 +293,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (103, 17, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (17, 103, 103);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (20000, 8000, 130000, 6, 18, 'Medición', 'Nivel Láser');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967776', 18, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967776', 18, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (104, 18, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (18, 104, 104);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (105, 18, 'AVAILABLE');
@@ -307,7 +307,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (109, 18, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (18, 109, 109);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (35000, 14000, 270000, 7, 19, 'Construcción', 'Vibrador de Inmersión');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967785', 19, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967785', 19, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (110, 19, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (19, 110, 110);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (111, 19, 'AVAILABLE');
@@ -323,7 +323,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (116, 19, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (19, 116, 116);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (120000, 50000, 850000, 6, 20, 'Maquinaria', 'Placa Compactadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967800', 20, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967800', 20, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (117, 20, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (20, 117, 117);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (118, 20, 'AVAILABLE');
@@ -337,7 +337,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (122, 20, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (20, 122, 122);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (18000, 7000, 110000, 5, 21, 'Construcción', 'Cortadora de Cerámica');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967809', 21, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967809', 21, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (123, 21, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (21, 123, 123);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (124, 21, 'AVAILABLE');
@@ -349,7 +349,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (127, 21, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (21, 127, 127);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (55000, 22000, 400000, 8, 22, 'Construcción', 'Andamio');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967817', 22, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967817', 22, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (128, 22, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (22, 128, 128);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (129, 22, 'AVAILABLE');
@@ -367,7 +367,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (135, 22, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (22, 135, 135);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (9000, 3500, 50000, 7, 23, 'Eléctrica', 'Pistola de Calor');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967830', 23, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967830', 23, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (136, 23, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (23, 136, 136);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (137, 23, 'AVAILABLE');
@@ -383,7 +383,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (142, 23, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (23, 142, 142);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (8000, 3000, 40000, 6, 24, 'Medición', 'Multímetro');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967839', 24, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967839', 24, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (143, 24, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (24, 143, 143);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (144, 24, 'AVAILABLE');
@@ -397,7 +397,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (148, 24, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (24, 148, 148);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (22000, 9000, 160000, 7, 25, 'Mecánica', 'Llave de Impacto');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967848', 25, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967848', 25, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (149, 25, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (25, 149, 149);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (150, 25, 'AVAILABLE');
@@ -413,7 +413,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (155, 25, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (25, 155, 155);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (12000, 5000, 80000, 7, 26, 'Mecánica', 'Gata Hidráulica');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967859', 26, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967859', 26, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (156, 26, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (26, 156, 156);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (157, 26, 'AVAILABLE');
@@ -429,7 +429,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (162, 26, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (26, 162, 162);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (50000, 20000, 350000, 5, 27, 'Mecánica', 'Prensa Hidráulica');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967870', 27, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967870', 27, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (163, 27, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (27, 163, 163);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (164, 27, 'AVAILABLE');
@@ -441,7 +441,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (167, 27, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (27, 167, 167);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (38000, 15000, 280000, 8, 28, 'Eléctrica', 'Taladro de Banco');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967878', 28, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967878', 28, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (168, 28, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (28, 168, 168);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (169, 28, 'AVAILABLE');
@@ -459,7 +459,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (175, 28, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (28, 175, 175);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (22000, 9000, 150000, 7, 29, 'Jardinería', 'Cortasetos');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967890', 29, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967890', 29, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (176, 29, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (29, 176, 176);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (177, 29, 'AVAILABLE');
@@ -475,7 +475,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (182, 29, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (29, 182, 182);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (18000, 7000, 130000, 8, 30, 'Jardinería', 'Sopladora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967900', 30, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967900', 30, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (183, 30, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (30, 183, 183);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (184, 30, 'AVAILABLE');
@@ -493,7 +493,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (190, 30, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (30, 190, 190);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (10000, 4000, 70000, 5, 31, 'Plomería', 'Termofusora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967911', 31, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967911', 31, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (191, 31, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (31, 191, 191);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (192, 31, 'AVAILABLE');
@@ -505,7 +505,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (195, 31, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (31, 195, 195);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (25000, 10000, 180000, 7, 32, 'Medición', 'Detector de Metales');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967919', 32, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967919', 32, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (196, 32, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (32, 196, 196);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (197, 32, 'AVAILABLE');
@@ -521,7 +521,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (202, 32, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (32, 202, 202);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (60000, 25000, 420000, 5, 33, 'Mecánica', 'Escáner Automotriz');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967930', 33, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967930', 33, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (203, 33, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (33, 203, 203);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (204, 33, 'AVAILABLE');
@@ -533,7 +533,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (207, 33, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (33, 207, 207);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (45000, 18000, 300000, 8, 34, 'Limpieza', 'Aspiradora Industrial');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967938', 34, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967938', 34, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (208, 34, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (34, 208, 208);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (209, 34, 'AVAILABLE');
@@ -551,7 +551,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (215, 34, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (34, 215, 215);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (50000, 20000, 350000, 5, 35, 'Eléctrica', 'Sierra de Banco');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.967948', 35, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.967948', 35, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (216, 35, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (35, 216, 216);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (217, 35, 'AVAILABLE');
@@ -563,7 +563,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (220, 35, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (35, 220, 220);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (32000, 13000, 240000, 6, 36, 'Construcción', 'Tronzadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.967956', 36, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.967956', 36, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (221, 36, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (36, 221, 221);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (222, 36, 'AVAILABLE');
@@ -577,7 +577,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (226, 36, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (36, 226, 226);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (28000, 11000, 200000, 8, 37, 'Eléctrica', 'Cizalla');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967966', 37, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967966', 37, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (227, 37, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (37, 227, 227);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (228, 37, 'AVAILABLE');
@@ -595,7 +595,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (234, 37, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (37, 234, 234);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (26000, 10000, 190000, 8, 38, 'Eléctrica', 'Amoladora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.967980', 38, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.967980', 38, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (235, 38, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (38, 235, 235);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (236, 38, 'AVAILABLE');
@@ -613,7 +613,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (242, 38, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (38, 242, 242);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (15000, 6000, 90000, 7, 39, 'Construcción', 'Mezcladora de Pintura');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.967991', 39, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.967991', 39, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (243, 39, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (39, 243, 243);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (244, 39, 'AVAILABLE');
@@ -629,7 +629,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (249, 39, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (39, 249, 249);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (6000, 2500, 35000, 8, 40, 'Medición', 'Detector de Tensión');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.968002', 40, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.968002', 40, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (250, 40, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (40, 250, 250);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (251, 40, 'AVAILABLE');
@@ -647,7 +647,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (257, 40, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (40, 257, 257);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (35000, 14000, 250000, 8, 41, 'Maquinaria', 'Bomba de Agua');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.968014', 41, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.968014', 41, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (258, 41, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (41, 258, 258);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (259, 41, 'AVAILABLE');
@@ -665,7 +665,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (265, 41, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (41, 265, 265);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (45000, 18000, 320000, 7, 42, 'Eléctrica', 'Sierra Ingleteadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.968026', 42, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.968026', 42, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (266, 42, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (42, 266, 266);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (267, 42, 'AVAILABLE');
@@ -681,7 +681,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (272, 42, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (42, 272, 272);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (20000, 8000, 150000, 6, 43, 'Construcción', 'Rodillo Compactador');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.968036', 43, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.968036', 43, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (273, 43, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (43, 273, 273);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (274, 43, 'AVAILABLE');
@@ -695,7 +695,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (278, 43, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (43, 278, 278);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (10000, 4000, 60000, 5, 44, 'Manual', 'Carretilla');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2026-03-03 09:40:25.968045', 44, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (5, '2024-03-03 09:40:25.968045', 44, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (279, 44, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (44, 279, 279);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (280, 44, 'AVAILABLE');
@@ -707,7 +707,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (283, 44, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (44, 283, 283);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (12000, 5000, 75000, 7, 45, 'Medición', 'Pinza Amperimétrica');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2026-03-03 09:40:25.968054', 45, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (7, '2024-03-03 09:40:25.968054', 45, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (284, 45, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (45, 284, 284);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (285, 45, 'AVAILABLE');
@@ -723,7 +723,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (290, 45, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (45, 290, 290);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (13000, 5000, 85000, 6, 46, 'Manual', 'Escalera Tijera');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.968064', 46, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.968064', 46, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (291, 46, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (46, 291, 291);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (292, 46, 'AVAILABLE');
@@ -737,7 +737,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (296, 46, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (46, 296, 296);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (18000, 7000, 120000, 8, 47, 'Construcción', 'Pistola de Pintura');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.968073', 47, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.968073', 47, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (297, 47, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (47, 297, 297);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (298, 47, 'AVAILABLE');
@@ -755,7 +755,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (304, 47, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (47, 304, 304);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (70000, 30000, 500000, 6, 48, 'Eléctrica', 'Cortadora Plasma');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.968085', 48, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.968085', 48, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (305, 48, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (48, 305, 305);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (306, 48, 'AVAILABLE');
@@ -769,7 +769,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (310, 48, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (48, 310, 310);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (65000, 25000, 450000, 6, 49, 'Jardinería', 'Barrenadora');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2026-03-03 09:40:25.968094', 49, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (6, '2024-03-03 09:40:25.968094', 49, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (311, 49, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (49, 311, 311);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (312, 49, 'AVAILABLE');
@@ -783,7 +783,7 @@ INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) V
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (316, 49, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (49, 316, 316);
 INSERT INTO public.type_tool_entity (daily_rate, debt_rate, replacement_value, stock, id_type_tool, category, name) VALUES (130000, 55000, 900000, 8, 50, 'Maquinaria', 'Torre de Iluminación');
-INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2026-03-03 09:40:25.968103', 50, NULL, NULL, 'TOOL_REGISTER');
+INSERT INTO public.kardex_entity (quantity, date, id_kardex, loan_id, user_id, type_move) VALUES (8, '2024-03-03 09:40:25.968103', 50, NULL, NULL, 'TOOL_REGISTER');
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (317, 50, 'AVAILABLE');
 INSERT INTO public.kardex_detail_entity (id_kardex, id_kardex_detail, id_tool) VALUES (50, 317, 317);
 INSERT INTO public.tool_entity (id_tool, type_tool_id_type_tool, state) VALUES (318, 50, 'AVAILABLE');

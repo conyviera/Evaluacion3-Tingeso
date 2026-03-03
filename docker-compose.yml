@@ -6,10 +6,10 @@ services:
     container_name: postgres-db
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 09282325
+      POSTGRES_PASSWORD: "09282325"
       POSTGRES_DB: ProyectTingeso
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -51,7 +51,7 @@ services:
       DB_PORT: 5432
       DB_NAME: ProyectTingeso
       DB_USER: postgres
-      DB_PASSWORD: 09282325
+      DB_PASSWORD: "09282325"
       SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUER_URI: http://keycloak-server:8080/realms/sisgr-realm
       KEYCLOAK_JWK_SET_URI: http://keycloak-server:8080/realms/sisgr-realm/protocol/openid-connect/certs
     depends_on:

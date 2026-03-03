@@ -189,113 +189,107 @@ function LoanPage() {
       </Box>
 
       {/* ---------------- BARRA DE FILTROS ---------------- */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2, gap: 2 }}>
-        <Grid container spacing={1} sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'nowrap',   // Evita que los elementos bajen a la siguiente línea
+          alignItems: 'center',
+          gap: 1.5,             // Espaciado entre componentes
+          mb: 3,
+          backgroundColor: '#ffffffff',
+          padding: 1.5,
+          borderRadius: 2,
+          boxShadow: '0px 2px 4px rgba(0,0,0,0.05)',
+          width: '100%',
+          overflowX: 'auto'     // Permite scroll lateral si la pantalla es muy pequeña
+        }}
+      >
+        {/* Filtro ID */}
+        <TextField
+          label="ID"
+          variant="outlined"
+          name="idLoan"
+          value={filters.idLoan}
+          onChange={handleFilterChange}
+          size="small"
+          sx={{ flex: '0 1 80px' }}
+        />
 
-          <Grid item xs={12} sm={6} md={2}>
-            <TextField
-              fullWidth
-              label="Buscar por Id"
-              variant="outlined"
-              name="idLoan"
-              value={filters.idLoan}
-              onChange={handleFilterChange}
-              size="small"
-              placeholder="Ej: 1"
+        {/* Filtro Estado */}
+        <FormControl size="small" sx={{ flex: '0 1 140px' }}>
+          <InputLabel>Estado</InputLabel>
+          <Select
+            name="state"
+            value={filters.state}
+            label="Estado"
+            onChange={handleFilterChange}
+          >
+            <MenuItem value=""><em>Todos</em></MenuItem>
+            <MenuItem value="ACTIVE">Activo</MenuItem>
+            <MenuItem value="RETURNED">Devolución</MenuItem>
+            <MenuItem value="EXPIRED">Vencido</MenuItem>
+          </Select>
+        </FormControl>
+
+        {/* Filtro Cliente */}
+        <FormControl size="small" sx={{ flex: '1 1 180px', minWidth: '150px' }}>
+          <InputLabel>Cliente</InputLabel>
+          <Select
+            name="customer"
+            value={filters.customer}
+            label="Cliente"
+            onChange={handleFilterChange}
+          >
+            <MenuItem value=""><em>Todos</em></MenuItem>
+            {Array.from(new Set((loan ?? []).map(ln => ln.customer?.name).filter(Boolean))).map((name, index) => (
+              <MenuItem key={index} value={name}>{name}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+
+        {/* Filtro de Fechas */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Desde"
+              value={dateRange[0]}
+              onChange={(newValue) => handleDateChange([newValue, dateRange[1]])}
+              slotProps={{ textField: { size: 'small', sx: { width: '135px', backgroundColor: 'white' } } }}
             />
-          </Grid>
+            <DatePicker
+              label="Hasta"
+              value={dateRange[1]}
+              onChange={(newValue) => handleDateChange([dateRange[0], newValue])}
+              slotProps={{ textField: { size: 'small', sx: { width: '135px', backgroundColor: 'white' } } }}
+            />
+          </LocalizationProvider>
+        </Box>
 
-          <Grid item xs={12} sm={6} md={2}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Estado</InputLabel>
-              <Select
-                name="state"
-                value={filters.state}
-                label="Estado"
-                onChange={handleFilterChange}
-              >
-                <MenuItem value=""><em>Todos</em></MenuItem>
-                <MenuItem value="ACTIVE">Activo</MenuItem>
-                <MenuItem value="RETURNED">Devolución</MenuItem>
-                <MenuItem value="EXPIRED">Vencido</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
+        {/* Iconos de Acción */}
+        <Box sx={{ display: 'flex', flexShrink: 0 }}>
+          <IconButton
+            onClick={handleDateFilter}
+            sx={{
+              color: '#4E7D10',
+              '&:hover': { filter: 'drop-shadow(0 0 8px #4E7D10)' },
+            }}
+            title="Filtrar por fecha"
+          >
+            <FilterAltIcon />
+          </IconButton>
 
-          <Grid item xs={12} sm={6} md={3}>
-            <FormControl fullWidth size="small">
-              <InputLabel>Cliente</InputLabel>
-              <Select
-                name="customer"
-                value={filters.customer}
-                label="Cliente"
-                onChange={handleFilterChange}
-              >
-                <MenuItem value=""><em>Todos</em></MenuItem>
-                {
-                  Array.from(new Set(
-                    (loan ?? [])
-                      .map(ln => ln.customer?.name)
-                      .filter(Boolean)
-                  )).map((name, index) => (
-                    <MenuItem key={index} value={name}>
-                      {name}
-                    </MenuItem>
-                  ))
-                }
-              </Select>
-            </FormControl>
-          </Grid>
-
-          <Grid item xs={12} sm={6} md={5}>
-            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center', mb: 2, flexWrap: 'wrap' }}>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DemoContainer components={['DateRangePicker']} sx={{ pt: 0, overflow: 'hidden' }}>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
-                    <DatePicker
-                      label="Desde"
-                      value={dateRange[0]}
-                      onChange={(newValue) => handleDateChange([newValue, dateRange[1]])}
-                      slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
-                    />
-                    <DatePicker
-                      label="Hasta"
-                      value={dateRange[1]}
-                      onChange={(newValue) => handleDateChange([dateRange[0], newValue])}
-                      slotProps={{ textField: { size: 'small', sx: { backgroundColor: 'white' } } }}
-                    />
-                  </Box>
-                </DemoContainer>
-              </LocalizationProvider>
-
-              <IconButton
-                onClick={handleDateFilter}
-                sx={{
-                  color: '#4E7D10',
-                  '&:hover': {
-                    filter: 'drop-shadow(0 0 10px #4E7D10)',
-                  },
-                }}
-                title="Filtrar"
-              >
-                <FilterAltIcon />
-              </IconButton>
-              <IconButton
-                onClick={handleClearFilters}
-                sx={{
-                  color: '#4E7D10',
-                  '&:hover': {
-                    filter: 'drop-shadow(0 0 10px #4E7D10)',
-                  },
-                }}
-                title="Limpiar"
-              >
-                <ClearIcon />
-              </IconButton>
-            </Box>
-          </Grid>
-
-        </Grid>
+          <IconButton
+            onClick={handleClearFilters}
+            sx={{
+              color: '#4E7D10', // Color distinto para limpiar para evitar confusiones
+              '&:hover': { filter: 'drop-shadow(0 0 8px #4E7D10)' },
+            }}
+            title="Limpiar filtros"
+          >
+            <ClearIcon />
+          </IconButton>
+        </Box>
       </Box>
 
       <div className='table-container'>

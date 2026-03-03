@@ -162,7 +162,7 @@ const KardexList = ({ kardex, loading, error, requestSort, sortConfig, onRetry }
                     }
                   </MuiTableCell>
                   <MuiTableCell align="center">{move.loan?.idLoan || 'Sin prestamo asociado'}</MuiTableCell>
-                  <MuiTableCell align="center">{move.user.username || 'usuario sin nombre'}</MuiTableCell>
+                  <MuiTableCell align="center">{move.user?.username || 'usuario sin nombre'}</MuiTableCell>
                 </StyledBodyRow>
               ))
             )}

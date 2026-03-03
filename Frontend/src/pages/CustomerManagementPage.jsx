@@ -186,6 +186,7 @@ function CustomerManagementPage() {
                 value={filters.state}
                 label="Estado"
                 onChange={handleFilterChange}
+                size="small"
               >
                 <MenuItem value=""><em>Todos</em></MenuItem>
                 <MenuItem value="ACTIVE">Activo</MenuItem>
@@ -210,8 +211,6 @@ function CustomerManagementPage() {
 
       {/* --- FIN DE LA NUEVA BARRA --- */}
 
-
-      {/* --- El resto de tu página (Tabla y Paginación) --- */}
       <div className='table-container'>
         <CustomerList
           customers={itemsCurrentPage}
