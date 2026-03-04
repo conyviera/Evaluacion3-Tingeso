@@ -4,7 +4,6 @@ import com.example.ProyectoTingeso.Entities.CustomerEntity;
 import com.example.ProyectoTingeso.Entities.LoanEntity;
 import com.example.ProyectoTingeso.Repositories.CustomerRepository;
 import com.example.ProyectoTingeso.Repositories.LoanRepository;
-import com.example.ProyectoTingeso.Repositories.ToolRepository;
 import com.example.ProyectoTingeso.Services.LoanService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/loans")
@@ -30,15 +28,12 @@ public class LoanController {
 
     private final LoanService loanService;
     private final CustomerRepository customerRepository;
-    private final ToolRepository toolRepository;
     private final LoanRepository loanRepo;
 
-    public LoanController(LoanService loanService, CustomerRepository customerRepository, LoanRepository loanRepo,
-            ToolRepository toolRepository) {
+    public LoanController(LoanService loanService, CustomerRepository customerRepository, LoanRepository loanRepo) {
         this.loanService = loanService;
         this.customerRepository = customerRepository;
         this.loanRepo = loanRepo;
-        this.toolRepository = toolRepository;
     }
 
     /**
@@ -52,7 +47,7 @@ public class LoanController {
 
             List<Long> typeToolIds = ((List<?>) payload.get("typeToolIds")).stream()
                     .map(id -> ((Number) id).longValue())
-                    .collect(Collectors.toList());
+                    .toList();
 
             LocalDate deliveryDate = LocalDate.parse((String) payload.get("deliveryDate"));
             LocalDate returnDate = LocalDate.parse((String) payload.get("returnDate"));
@@ -126,7 +121,7 @@ public class LoanController {
         try {
             List<Long> typeToolIds = ((List<?>) payload.get("typeToolIds")).stream()
                     .map(id -> ((Number) id).longValue())
-                    .collect(Collectors.toList());
+                    .toList();
 
             LocalDate deliveryDate = LocalDate.parse((String) payload.get("deliveryDate"));
             LocalDate returnDate = LocalDate.parse((String) payload.get("returnDate"));

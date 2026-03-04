@@ -1,10 +1,8 @@
 package com.example.ProyectoTingeso.Services;
 
 import com.example.ProyectoTingeso.Entities.CustomerEntity;
-import com.example.ProyectoTingeso.Entities.DebtsEntity;
 import com.example.ProyectoTingeso.Entities.LoanEntity;
 import com.example.ProyectoTingeso.Repositories.CustomerRepository;
-import com.example.ProyectoTingeso.Repositories.DebtsRepository;
 import com.example.ProyectoTingeso.Repositories.LoanRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

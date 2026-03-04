@@ -12,12 +12,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -26,11 +25,11 @@ public class UserService {
     private static final List<String> ROLES_A_IGNORAR = Arrays.asList(
             "offline_access",
             "uma_authorization",
-            "default-roles-sisgr-realm"
-    );
+            "default-roles-sisgr-realm");
 
     /**
      * RF 7.1: Register system users with access credentials
+     * 
      * @return
      */
 
@@ -58,10 +57,9 @@ public class UserService {
 
                     List<String> appRol = rol.stream()
                             .filter(role -> !ROLES_A_IGNORAR.contains(role))
-                            .collect(Collectors.toList());
+                            .toList();
 
                     newUser.setRol(String.join(",", appRol));
-
 
                     return userRepository.save(newUser);
                 });

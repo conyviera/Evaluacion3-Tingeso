@@ -6,7 +6,6 @@ import com.example.ProyectoTingeso.Entities.LoanEntity;
 import com.example.ProyectoTingeso.Entities.ToolEntity;
 import com.example.ProyectoTingeso.Repositories.CustomerRepository;
 import com.example.ProyectoTingeso.Repositories.DebtsRepository;
-import com.example.ProyectoTingeso.Repositories.LoanRepository;
 import com.example.ProyectoTingeso.Repositories.ToolRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -33,17 +32,15 @@ public class DebtsService {
     private final ToolService toolService;
     private final CustomerRepository customerRepo;
     private final KardexService kardexService;
-    private final LoanRepository loanRepository;
 
     @Autowired
     public DebtsService(DebtsRepository debtsRepo, ToolRepository toolRepo, ToolService toolService,
-            CustomerRepository customerRepo, KardexService kardexService, LoanRepository loanRepository) {
+            CustomerRepository customerRepo, KardexService kardexService) {
         this.debtsRepo = debtsRepo;
         this.toolRepo = toolRepo;
         this.toolService = toolService;
         this.customerRepo = customerRepo;
         this.kardexService = kardexService;
-        this.loanRepository = loanRepository;
     }
 
     /**
@@ -173,8 +170,9 @@ public class DebtsService {
             throw new IllegalArgumentException("Los datos no son válidos.");
         }
 
+        String toolNotFoundMsg = "La herramienta con ID " + idTool + " no existe.";
         ToolEntity tool = toolRepo.findById(idTool)
-                .orElseThrow(() -> new EntityNotFoundException("La herramienta con ID " + idTool + " no existe."));
+                .orElseThrow(() -> new EntityNotFoundException(toolNotFoundMsg));
 
         DebtsEntity debt = debtsRepo.findByToolAndStatusAndType(tool, STATUS_PENDING_ASSESSMENT, "DAMAGES")
                 .orElseThrow(
