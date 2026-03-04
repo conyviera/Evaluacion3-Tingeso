@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
+import PropTypes from 'prop-types';
 import Home from './pages/HomePage';
 import ToolInventoryPage from './pages/ToolInventoryPage';
 import LoanPage from './pages/LoanPage';
@@ -15,6 +16,26 @@ import DebtList from './components/List/DebtList';
 import NotFoundPage from './pages/NotFoundPage';
 import { useEffect } from 'react';
 
+// Extracted outside App to avoid re-definition on each render (SonarQube rule)
+const PrivateRoute = ({ children, rolesAllowed, isLoggedIn, roles, onLogin }) => {
+  if (!isLoggedIn) {
+    onLogin();
+    return null;
+  }
+  const tieneRol = rolesAllowed.some(r => roles.includes(r));
+  if (rolesAllowed && !tieneRol) {
+    return <h2>No tienes permiso para ver esta página</h2>;
+  }
+  return children;
+};
+
+PrivateRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  rolesAllowed: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onLogin: PropTypes.func.isRequired,
+};
 
 function App() {
   const { keycloak, initialized } = useKeycloak();
@@ -42,18 +63,6 @@ function App() {
   const isLoggedIn = keycloak.authenticated;
   const roles = keycloak.tokenParsed?.realm_access?.roles || [];
 
-  const PrivateRoute = ({ children, rolesAllowed }) => {
-    if (!isLoggedIn) {
-      keycloak.login();
-      return null;
-    }
-    const tieneRol = rolesAllowed.some(r => roles.includes(r));
-    if (rolesAllowed && !tieneRol) {
-      return <h2>No tienes permiso para ver esta página</h2>;
-    }
-    return children;
-  };
-
   if (!isLoggedIn) {
     keycloak.login();
     return null;
@@ -69,7 +78,7 @@ function App() {
         <Route
           path="CustomerManagementPage"
           element={
-            <PrivateRoute rolesAllowed={["USER", "ADMIN"]} >
+            <PrivateRoute rolesAllowed={["USER", "ADMIN"]} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <CustomerManagementPage />
             </PrivateRoute>
           }
@@ -78,7 +87,7 @@ function App() {
         <Route
           path="ToolInventoryPage"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <ToolInventoryPage />
             </PrivateRoute>
           }
@@ -88,7 +97,7 @@ function App() {
         <Route
           path="LoanPage"
           element={
-            <PrivateRoute rolesAllowed={["USER", "ADMIN"]} >
+            <PrivateRoute rolesAllowed={["USER", "ADMIN"]} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <LoanPage />
             </PrivateRoute>
           }
@@ -97,7 +106,7 @@ function App() {
         <Route
           path="typeTool/:id"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <ToolUnitaryList />
             </PrivateRoute>
           }
@@ -106,7 +115,7 @@ function App() {
         <Route
           path="Kardex"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <KardexPage />
             </PrivateRoute>
           }
@@ -115,7 +124,7 @@ function App() {
         <Route
           path="DeacticateUnusedTool/:id"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <DeactivateUnusedTool />
             </PrivateRoute>
           }
@@ -124,7 +133,7 @@ function App() {
         <Route
           path="MovementsTool/:id"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <MoveUnitaryList />
             </PrivateRoute>
           }
@@ -133,7 +142,7 @@ function App() {
         <Route
           path="UpdateTypeTool/:id"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <UpdateTypeToolForm />
             </PrivateRoute>
           }
@@ -142,7 +151,7 @@ function App() {
         <Route
           path="DebtList/:id"
           element={
-            <PrivateRoute rolesAllowed={['ADMIN']}>
+            <PrivateRoute rolesAllowed={['ADMIN']} isLoggedIn={isLoggedIn} roles={roles} onLogin={() => keycloak.login()}>
               <DebtList />
             </PrivateRoute>
           }

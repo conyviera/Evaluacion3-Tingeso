@@ -242,8 +242,8 @@ function LoanPage() {
             onChange={handleFilterChange}
           >
             <MenuItem value=""><em>Todos</em></MenuItem>
-            {Array.from(new Set((loan ?? []).map(ln => ln.customer?.name).filter(Boolean))).map((name, index) => (
-              <MenuItem key={index} value={name}>{name}</MenuItem>
+            {Array.from(new Set((loan ?? []).map(ln => ln.customer?.name).filter(Boolean))).map((name) => (
+              <MenuItem key={name} value={name}>{name}</MenuItem>
             ))}
           </Select>
         </FormControl>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import loanService from '../../services/loan.services';
 import '../../App.css';
 import { Typography } from '@mui/material';
@@ -95,7 +96,7 @@ function ReturnLoanForm({ onReturnLoan }) {
         setIsLoading(true);
 
         const toolStatesArray = Object.keys(toolStates).map(toolId => ({
-            toolId: parseInt(toolId, 10),
+            toolId: Number.parseInt(toolId, 10),
             state: toolStates[toolId]
         }));
 
@@ -145,17 +146,18 @@ function ReturnLoanForm({ onReturnLoan }) {
 
             {!loanDetails && (
                 <div>
-                    <label>
+                    <label htmlFor="return-loan-id">
                         ID del Préstamo:
-                        <input
-                            className="input-style"
-                            type="number"
-                            value={loanId}
-                            onChange={(e) => { setLoanId(e.target.value); setErrors({ ...errors, loanId: '' }); }}
-                            placeholder="Ingresa ID del préstamo"
-                        />
-                        {errors.loanId && <Typography variant="caption" color="error" display="block">{errors.loanId}</Typography>}
                     </label>
+                    <input
+                        id="return-loan-id"
+                        className="input-style"
+                        type="number"
+                        value={loanId}
+                        onChange={(e) => { setLoanId(e.target.value); setErrors({ ...errors, loanId: '' }); }}
+                        placeholder="Ingresa ID del préstamo"
+                    />
+                    {errors.loanId && <Typography variant="caption" color="error" display="block">{errors.loanId}</Typography>}
 
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
                         <br />
@@ -177,8 +179,9 @@ function ReturnLoanForm({ onReturnLoan }) {
 
                     {loanDetails.tool.map(tool => (
                         <div key={tool.idTool}>
-                            <label>{tool.typeTool.name} (ID: {tool.idTool})</label>
+                            <label htmlFor={`tool-state-${tool.idTool}`}>{tool.typeTool.name} (ID: {tool.idTool})</label>
                             <select
+                                id={`tool-state-${tool.idTool}`}
                                 className="input-style"
                                 value={toolStates[tool.idTool] || ''}
                                 onChange={(e) => handleStateChange(tool.idTool, e.target.value)}
@@ -205,5 +208,9 @@ function ReturnLoanForm({ onReturnLoan }) {
         </div>
     );
 }
+
+ReturnLoanForm.propTypes = {
+    onReturnLoan: PropTypes.func.isRequired,
+};
 
 export default ReturnLoanForm;

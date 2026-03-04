@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import toolService from '../../services/tool.services';
-import Logo from '../../image/logo.png';
 import { Typography, Snackbar, Alert } from '@mui/material';
 
 function AddExistingToolForm({ typeTool, onToolAdded }) {
@@ -20,10 +20,10 @@ function AddExistingToolForm({ typeTool, onToolAdded }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const numQuantity = parseInt(quantity, 10);
+    const numQuantity = Number.parseInt(quantity, 10);
 
-    let newErrors = {};
-    if (isNaN(numQuantity) || numQuantity <= 0) {
+    const newErrors = {};
+    if (Number.isNaN(numQuantity) || numQuantity <= 0) {
       newErrors.quantity = "Por favor, ingresa una cantidad válida y mayor a 0.";
     }
 
@@ -32,14 +32,13 @@ function AddExistingToolForm({ typeTool, onToolAdded }) {
       return;
     }
 
-    const toolData =
-    {
+    const toolData = {
       name: typeTool.name,
       category: typeTool.category,
       replacementValue: typeTool.replacementValue,
       dailyRate: typeTool.dailyRate,
       debtRate: typeTool.debtRate,
-      quantity: parseInt(quantity, 10)
+      quantity: Number.parseInt(quantity, 10)
     };
 
     try {
@@ -49,11 +48,10 @@ function AddExistingToolForm({ typeTool, onToolAdded }) {
       onToolAdded();
 
     } catch (error) {
-      if (error.response && error.response.data) {
-        setAlertConfig({ open: true, message: error.response.data, type: 'error' });
-      } else {
-        setAlertConfig({ open: true, message: 'Hubo un error de conexión al agregar la herramienta.', type: 'error' });
-      }
+      const msg = error.response?.data
+        ? error.response.data
+        : 'Hubo un error de conexión al agregar la herramienta.';
+      setAlertConfig({ open: true, message: msg, type: 'error' });
     }
   };
 
@@ -62,22 +60,23 @@ function AddExistingToolForm({ typeTool, onToolAdded }) {
       <form className="form-data" onSubmit={handleSubmit}>
 
         <h3 className='title-input'>Agregar a: <br /> {typeTool.name}</h3>
-        <label>
+        <label htmlFor="qty-existing">
           Cantidad a agregar:
-          <input
-            className="input-style"
-            type="number"
-            value={quantity}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (value === '' || Number(value) >= 0) {
-                setQuantity(e.target.value)
-              }
-              setErrors({ ...errors, quantity: '' });
-            }}
-          />
-          {errors.quantity && <Typography variant="caption" color="error" display="block">{errors.quantity}</Typography>}
         </label>
+        <input
+          id="qty-existing"
+          className="input-style"
+          type="number"
+          value={quantity}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (value === '' || Number(value) >= 0) {
+              setQuantity(e.target.value)
+            }
+            setErrors({ ...errors, quantity: '' });
+          }}
+        />
+        {errors.quantity && <Typography variant="caption" color="error" display="block">{errors.quantity}</Typography>}
 
         <div style={{
           display: 'flex',
@@ -109,5 +108,16 @@ function AddExistingToolForm({ typeTool, onToolAdded }) {
 
 
 }
+
+AddExistingToolForm.propTypes = {
+  typeTool: PropTypes.shape({
+    name: PropTypes.string,
+    category: PropTypes.string,
+    replacementValue: PropTypes.number,
+    dailyRate: PropTypes.number,
+    debtRate: PropTypes.number,
+  }),
+  onToolAdded: PropTypes.func.isRequired,
+};
 
 export default AddExistingToolForm;

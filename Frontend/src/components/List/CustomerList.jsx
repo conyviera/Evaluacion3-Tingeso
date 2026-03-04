@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { CircularProgress, Typography, TableSortLabel, Box, Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -9,12 +10,74 @@ import MuiTableCell from '@mui/material/TableCell';
 import { StyledTableHead, StyledHeaderCell, StyledBodyRow } from '../Styles/TableStyles';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-const CustomerList = ({ customers, loading, error, requestSort, sortConfig, onRetry }) => {
+const colSpan = 6;
 
-  const colSpan = 6;
+const renderCustomerState = (state) => {
+  if (state === 'ACTIVE') return <span style={{ color: 'green' }}>ACTIVO</span>;
+  return <span style={{ color: 'red' }}>RESTRINGIDO</span>;
+};
+
+const CustomerList = ({ customers, loading, error, requestSort, sortConfig, onRetry }) => {
 
   const createSortHandler = (property) => () => {
     if (requestSort) requestSort(property);
+  };
+
+  const renderTableBody = () => {
+    if (loading) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
+            <Typography component="span" variant="body2" color="text.secondary">
+              Cargando datos...
+            </Typography>
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    if (error) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+              {typeof error === 'string' ? error : "Error al mostrar datos"}
+            </Typography>
+            {onRetry && (
+              <Button variant="outlined" color="error" size="small" onClick={onRetry} startIcon={<RefreshIcon />}>
+                Reintentar
+              </Button>
+            )}
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    if (customers.length === 0) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              No se encontraron clientes registrados.
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Puedes agregar uno nuevo utilizando el botón superior &quot;Añadir Cliente&quot;.
+            </Typography>
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    return customers.map((cust) => (
+      <StyledBodyRow key={cust.idCustomer}>
+        <MuiTableCell align="center">{cust.idCustomer}</MuiTableCell>
+        <MuiTableCell align="center">{cust.name}</MuiTableCell>
+        <MuiTableCell align="center">{cust.rut}</MuiTableCell>
+        <MuiTableCell align="center">{cust.phoneNumber}</MuiTableCell>
+        <MuiTableCell align="center">{cust.email}</MuiTableCell>
+        <MuiTableCell align="center">
+          {renderCustomerState(cust.state)}
+        </MuiTableCell>
+      </StyledBodyRow>
+    ));
   };
 
   return (
@@ -91,61 +154,31 @@ const CustomerList = ({ customers, loading, error, requestSort, sortConfig, onRe
             </TableRow>
           </StyledTableHead>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
-                  <Typography component="span" variant="body2" color="text.secondary">
-                    Cargando datos...
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : error ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body2" color="error" sx={{ mb: 1 }}>
-                    {typeof error === 'string' ? error : "Error al mostrar datos"}
-                  </Typography>
-                  {onRetry && (
-                    <Button variant="outlined" color="error" size="small" onClick={onRetry} startIcon={<RefreshIcon />}>
-                      Reintentar
-                    </Button>
-                  )}
-                </MuiTableCell>
-              </TableRow>
-            ) : customers.length === 0 ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                    No se encontraron clientes registrados.
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Puedes agregar uno nuevo utilizando el botón superior "Añadir Cliente".
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : (
-              customers.map((cust) => (
-                <StyledBodyRow key={cust.idCustomer}>
-                  <MuiTableCell align="center">{cust.idCustomer}</MuiTableCell>
-                  <MuiTableCell align="center">{cust.name}</MuiTableCell>
-                  <MuiTableCell align="center">{cust.rut}</MuiTableCell>
-                  <MuiTableCell align="center">{cust.phoneNumber}</MuiTableCell>
-                  <MuiTableCell align="center">{cust.email}</MuiTableCell>
-                  <MuiTableCell align="center">
-                    {cust.state === 'ACTIVE' ? (
-                      <span style={{ color: 'green' }}>ACTIVO</span>
-                    ) : (
-                      <span style={{ color: 'red' }}>RESTRINGIDO</span>
-                    )}
-                  </MuiTableCell>
-                </StyledBodyRow>
-              ))
-            )}
+            {renderTableBody()}
           </TableBody>
         </Table>
       </TableContainer >
     </div >
   );
 }
+
+CustomerList.propTypes = {
+  customers: PropTypes.arrayOf(PropTypes.shape({
+    idCustomer: PropTypes.number,
+    name: PropTypes.string,
+    rut: PropTypes.string,
+    phoneNumber: PropTypes.string,
+    email: PropTypes.string,
+    state: PropTypes.string,
+  })).isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  requestSort: PropTypes.func,
+  sortConfig: PropTypes.shape({
+    key: PropTypes.string,
+    direction: PropTypes.string,
+  }),
+  onRetry: PropTypes.func,
+};
+
 export default CustomerList;

@@ -160,7 +160,6 @@ export default function MainLayout() {
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchQuery, setSearchQuery] = React.useState('');
   const { keycloak } = useKeycloak();
 
   const breadcrumbs = getBreadcrumbs(location.pathname);
@@ -194,7 +193,7 @@ export default function MainLayout() {
         <DrawerHeader>
           <Box
             component="img"
-            sx={{ height: 100, my: 1 }}
+            sx={{ height: 70, my: 1 }}
             alt="Logo"
             src={logo}
           />

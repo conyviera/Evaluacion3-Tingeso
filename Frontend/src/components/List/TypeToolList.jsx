@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { CircularProgress, Typography, Box, IconButton, TableSortLabel, Button } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -42,6 +43,120 @@ const TypeToolList = ({ typeTool, onRefreshList, loading, error, requestSort, so
 
   const createSortHandler = (property) => () => {
     if (requestSort) requestSort(property);
+  };
+
+  const renderTableBody = () => {
+    if (loading) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
+            <Typography component="span" variant="body2" color="text.secondary">
+              Cargando datos...
+            </Typography>
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    if (error) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+              {typeof error === 'string' ? error : 'Error al mostrar datos'}
+            </Typography>
+            {onRetry && (
+              <Button variant="outlined" color="error" size="small" onClick={onRetry} startIcon={<RefreshIcon />}>
+                Reintentar
+              </Button>
+            )}
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    if (typeTool.length === 0) {
+      return (
+        <TableRow>
+          <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+              No se encontraron herramientas registradas en el inventario.
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Puedes agregar una nueva categoría utilizando el botón superior &quot;Añadir herramienta&quot;.
+            </Typography>
+          </MuiTableCell>
+        </TableRow>
+      );
+    }
+    return typeTool.map((tool) => (
+      <StyledBodyRow key={tool.idTypeTool}>
+        <MuiTableCell align="center">{tool.idTypeTool}</MuiTableCell>
+        <MuiTableCell align="center">{tool.name}</MuiTableCell>
+        <MuiTableCell align="center">{tool.category}</MuiTableCell>
+        <MuiTableCell align="center">$ {tool.replacementValue}</MuiTableCell>
+        <MuiTableCell align="center">$ {tool.dailyRate}</MuiTableCell>
+        <MuiTableCell align="center">$ {tool.debtRate}</MuiTableCell>
+        <MuiTableCell align="center">{tool.stock}</MuiTableCell>
+        <MuiTableCell align="center">
+          <Box display="flex" justifyContent="center" alignItems="center">
+            <BasicModal
+              open={addModalOpen && selectedTool?.idTypeTool === tool.idTypeTool}
+              handleClose={() => setAddModalOpen(false)}
+              button={
+                <IconButton
+                  onClick={() => handleOpenModal(tool)}
+                  sx={{
+                    color: '#4E7D10',
+                    '&:hover': {
+                      filter: 'drop-shadow(0 0 10px #4E7D10)',
+                    },
+                  }}
+                  title="Agregar stock a la herramienta"
+                >
+                  <AddIcon />
+                </IconButton>
+              }
+            >
+              <AddExistingToolForm
+                typeTool={tool}
+                onToolAdded={handleFormSubmitSuccess} />
+            </BasicModal>
+            <BasicModal
+              open={editModalOpen && selectedTool?.idTypeTool === tool.idTypeTool}
+              handleClose={() => setEditModalOpen(false)}
+              button={
+                <IconButton
+                  onClick={() => { setSelectedTool(tool); setEditModalOpen(true); }}
+                  sx={{
+                    color: '#4E7D10',
+                    '&:hover': {
+                      filter: 'drop-shadow(0 0 10px #4E7D10)',
+                    },
+                  }}
+                  title="Editar tipo de herramienta"
+                >
+                  <EditIcon />
+                </IconButton>
+              }
+            >
+              <UpdateTypeToolForm idTypeTool={tool.idTypeTool} onUpdate={onRefreshList} />
+            </BasicModal>
+            <IconButton
+              onClick={() => handleRowClick(tool.idTypeTool)}
+              sx={{
+                color: '#4E7D10',
+                '&:hover': {
+                  filter: 'drop-shadow(0 0 10px #4E7D10)',
+                }
+              }}
+              title="Ver herramientas unitarias"
+            >
+              <BuildIcon />
+            </IconButton>
+          </Box>
+        </MuiTableCell>
+      </StyledBodyRow>
+    ));
   };
 
   return (
@@ -129,114 +244,32 @@ const TypeToolList = ({ typeTool, onRefreshList, loading, error, requestSort, so
             </TableRow>
           </StyledTableHead>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
-                  <Typography component="span" variant="body2" color="text.secondary">
-                    Cargando datos...
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : error ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body2" color="error" sx={{ mb: 1 }}>
-                    {typeof error === 'string' ? error : "Error al mostrar datos"}
-                  </Typography>
-                  {onRetry && (
-                    <Button variant="outlined" color="error" size="small" onClick={onRetry} startIcon={<RefreshIcon />}>
-                      Reintentar
-                    </Button>
-                  )}
-                </MuiTableCell>
-              </TableRow>
-            ) : typeTool.length === 0 ? (
-              <TableRow>
-                <MuiTableCell colSpan={colSpan} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                    No se encontraron herramientas registradas en el inventario.
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Puedes agregar una nueva categoría utilizando el botón superior "Añadir herramienta".
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : (
-              typeTool.map((tool) => (
-                <StyledBodyRow key={tool.idTypeTool}>
-                  <MuiTableCell align="center">{tool.idTypeTool}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.name}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.category}</MuiTableCell>
-                  <MuiTableCell align="center">$ {tool.replacementValue}</MuiTableCell>
-                  <MuiTableCell align="center">$ {tool.dailyRate}</MuiTableCell>
-                  <MuiTableCell align="center">$ {tool.debtRate}</MuiTableCell>
-                  <MuiTableCell align="center">{tool.stock}</MuiTableCell>
-                  <MuiTableCell align="center">
-                    <Box display="flex" justifyContent="center" alignItems="center">
-                      <BasicModal
-                        open={addModalOpen && selectedTool?.idTypeTool === tool.idTypeTool}
-                        handleClose={() => setAddModalOpen(false)}
-                        button={
-                          <IconButton
-                            onClick={() => handleOpenModal(tool)}
-                            sx={{
-                              color: '#4E7D10',
-                              '&:hover': {
-                                filter: 'drop-shadow(0 0 10px #4E7D10)',
-                              },
-                            }}
-                            title="Agregar stock a la herramienta"
-                          >
-                            <AddIcon />
-                          </IconButton>
-                        }
-                      >
-                        <AddExistingToolForm
-                          typeTool={tool}
-                          onToolAdded={handleFormSubmitSuccess} />
-                      </BasicModal>
-                      <BasicModal
-                        open={editModalOpen && selectedTool?.idTypeTool === tool.idTypeTool}
-                        handleClose={() => setEditModalOpen(false)}
-                        button={
-                          <IconButton
-                            onClick={() => { setSelectedTool(tool); setEditModalOpen(true); }}
-                            sx={{
-                              color: '#4E7D10',
-                              '&:hover': {
-                                filter: 'drop-shadow(0 0 10px #4E7D10)',
-                              },
-                            }}
-                            title="Editar tipo de herramienta"
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        }
-                      >
-                        <UpdateTypeToolForm idTypeTool={tool.idTypeTool} onUpdate={onRefreshList} />
-                      </BasicModal>
-                      <IconButton
-                        onClick={() => handleRowClick(tool.idTypeTool)}
-                        sx={{
-                          color: '#4E7D10',
-                          '&:hover': {
-                            filter: 'drop-shadow(0 0 10px #4E7D10)',
-                          }
-                        }}
-                        title="Ver herramientas unitarias"
-                      >
-                        <BuildIcon />
-                      </IconButton>
-                    </Box>
-                  </MuiTableCell>
-                </StyledBodyRow>
-              ))
-            )}
+            {renderTableBody()}
           </TableBody>
         </Table>
       </TableContainer>
     </div>
   );
 }
+TypeToolList.propTypes = {
+  typeTool: PropTypes.arrayOf(PropTypes.shape({
+    idTypeTool: PropTypes.number,
+    name: PropTypes.string,
+    category: PropTypes.string,
+    replacementValue: PropTypes.number,
+    dailyRate: PropTypes.number,
+    debtRate: PropTypes.number,
+    stock: PropTypes.number,
+  })).isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+  onRefreshList: PropTypes.func.isRequired,
+  requestSort: PropTypes.func,
+  sortConfig: PropTypes.shape({
+    key: PropTypes.string,
+    direction: PropTypes.string,
+  }),
+  onRetry: PropTypes.func,
+};
+
 export default TypeToolList;

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 import toolServices from '../../services/tool.services';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 const DeactivateUnusedTool = ({ id, onUpdate }) => {
 
+  const { id: paramId } = useParams();
+  const toolId = id ?? paramId;
+
   const [tool, setTool] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
   const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'success' });
 
   // Custom Confirmation Dialog State
@@ -16,7 +19,7 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
   useEffect(() => {
     const fetchTool = async () => {
       try {
-        const response = await toolServices.getByIdTool(id);
+        const response = await toolServices.getByIdTool(toolId);
         setTool(response.data);
       } catch (error) {
         setAlertConfig({
@@ -29,10 +32,10 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
       }
     };
 
-    if (id) {
+    if (toolId) {
       fetchTool();
     }
-  }, [id]);
+  }, [toolId]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,7 +46,7 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
     setOpenConfirm(false);
 
     try {
-      await toolServices.deactivateUnusedTool(id);
+      await toolServices.deactivateUnusedTool(toolId);
 
       setAlertConfig({
         open: true,
@@ -51,7 +54,7 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
         type: 'success'
       });
 
-      onUpdate();
+      if (onUpdate) onUpdate();
 
     } catch (error) {
       setAlertConfig({
@@ -97,7 +100,7 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
           )}
         </div>
       )}
-      {message && <p className="feedback-message">{message}</p>}
+      {alertConfig.message && <p className="feedback-message">{alertConfig.message}</p>}
 
       {/* Confirmation Dialog */}
       <Dialog
@@ -125,6 +128,11 @@ const DeactivateUnusedTool = ({ id, onUpdate }) => {
       </Dialog>
     </div>
   );
+};
+
+DeactivateUnusedTool.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onUpdate: PropTypes.func,
 };
 
 export default DeactivateUnusedTool;

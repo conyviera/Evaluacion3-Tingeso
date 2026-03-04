@@ -18,7 +18,18 @@ import { useSort } from '../../hooks/useSort';
 import { getErrorMessage } from '../../utils/errorHandler.js';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
-const DebtList = ({ }) => {
+const renderDebtType = (type) => {
+  if (type === 'ARREARS') return 'ATRASO';
+  if (type === 'DAMAGES') return 'DAÑOS';
+  return 'OTRO';
+};
+
+const renderDebtStatus = (status) => {
+  if (status === 'PAID') return <span style={{ color: 'green' }}>PAGADA</span>;
+  return <span style={{ color: 'red' }}>PENDIENTE</span>;
+};
+
+const DebtList = () => {
 
   const { id } = useParams();
   const idLoan = id;
@@ -50,10 +61,102 @@ const DebtList = ({ }) => {
     setReload(!reload);
   };
 
-  const { sortedItems, requestSort, sortConfig } = useSort(debt, { key: 'idLoan', direction: 'asc' });
+  const { sortedItems } = useSort(debt, { key: 'idLoan', direction: 'asc' });
 
-  const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange, resetPage } = usePagination(sortedItems);
+  const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange } = usePagination(sortedItems);
 
+  const renderPaymentDate = (debtUnitary) => {
+    if (debtUnitary.paymentDate) return <span>{debtUnitary.paymentDate}</span>;
+    if (debtUnitary.amount === 0) return <span>N/A</span>;
+    return (
+      <BasicModal
+        button={
+          <IconButton
+            sx={{
+              color: '#4E7D10',
+              '&:hover': { filter: 'drop-shadow(0 0 10px #4E7D10)' },
+            }}
+            title="Pagar deuda"
+          >
+            <AttachMoneyIcon />
+          </IconButton>
+        }
+      >
+        <DebtPaidForm debt={debtUnitary} onDebtPaid={handleDebtPaid} />
+      </BasicModal>
+    );
+  };
+
+  const renderDebtTableBody = () => {
+    if (loading) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
+              <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
+              <Typography component="span" variant="body2" color="text.secondary">
+                Cargando datos...
+              </Typography>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    if (error) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
+              <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                {typeof error === 'string' ? error : "Error al mostrar datos"}
+              </Typography>
+              <Button variant="outlined" color="error" size="small" onClick={() => setReload(!reload)} startIcon={<RefreshIcon />}>
+                Reintentar
+              </Button>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    if (itemsCurrentPage.length === 0) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                No se encontraron deudas asociadas a este préstamo.
+              </Typography>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    return (
+      <React.Fragment>
+        {itemsCurrentPage.map((debtUnitary) => (
+          <StyledBodyRow key={debtUnitary.idDebts}>
+            <MuiTableCell align="center">{debtUnitary.idDebts}</MuiTableCell>
+            <MuiTableCell align="center">{renderDebtType(debtUnitary.type)}</MuiTableCell>
+            <MuiTableCell align="center">$ {debtUnitary.amount}</MuiTableCell>
+            <MuiTableCell align="center">{debtUnitary.creationDate}</MuiTableCell>
+            <MuiTableCell align="center">{renderPaymentDate(debtUnitary)}</MuiTableCell>
+            <MuiTableCell align="center">{renderDebtStatus(debtUnitary.status)}</MuiTableCell>
+            <MuiTableCell align="center">
+              {(Array.from(
+                new Set(
+                  (debtUnitary.tool || [])
+                    .map(h => h?.typeTool?.name)
+                    .filter(Boolean)
+                )
+              ).join(', '))
+                || 'Sin herramientas'
+              }
+            </MuiTableCell>
+          </StyledBodyRow>
+        ))}
+      </React.Fragment>
+    );
+  };
 
   return (
     <div className="table-container">
@@ -83,95 +186,7 @@ const DebtList = ({ }) => {
             </TableRow>
           </StyledTableHead>
           <TableBody>
-            {loading ? (
-              <TableRow>
-                <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
-                  <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
-                  <Typography component="span" variant="body2" color="text.secondary">
-                    Cargando datos...
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : error ? (
-              <TableRow>
-                <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body2" color="error" sx={{ mb: 1 }}>
-                    {typeof error === 'string' ? error : "Error al mostrar datos"}
-                  </Typography>
-                  <Button variant="outlined" color="error" size="small" onClick={() => setReload(!reload)} startIcon={<RefreshIcon />}>
-                    Reintentar
-                  </Button>
-                </MuiTableCell>
-              </TableRow>
-            ) : itemsCurrentPage.length === 0 ? (
-              <TableRow>
-                <MuiTableCell colSpan={7} align="center" sx={{ py: 4 }}>
-                  <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                    No se encontraron deudas asociadas a este préstamo.
-                  </Typography>
-                </MuiTableCell>
-              </TableRow>
-            ) : (
-              itemsCurrentPage.map((debtUnitary) => (
-                <StyledBodyRow
-                  key={debtUnitary.idDebts}
-                >
-                  <MuiTableCell align="center">{debtUnitary.idDebts}</MuiTableCell>
-                  <MuiTableCell align="center">{
-                    debtUnitary.type === 'ARREARS' ? 'ATRASO' :
-                      debtUnitary.type === 'DAMAGES' ? 'DAÑOS' :
-                        'OTRO'}
-                  </MuiTableCell>
-                  <MuiTableCell align="center">$ {debtUnitary.amount}</MuiTableCell>
-                  <MuiTableCell align="center">{debtUnitary.creationDate}</MuiTableCell>
-                  <MuiTableCell align="center">
-                    {debtUnitary.paymentDate ? (
-                      debtUnitary.paymentDate
-                    ) : (
-                      debtUnitary.amount === 0 ? (
-                        'N/A'
-                      ) : (
-                        <BasicModal
-                          button={
-                            <IconButton
-                              sx={{
-                                color: '#4E7D10',
-                                '&:hover': { filter: 'drop-shadow(0 0 10px #4E7D10)' },
-                              }}
-                              title="Pagar deuda"
-                            >
-                              <AttachMoneyIcon />
-                            </IconButton>
-                          }
-                        >
-                          <DebtPaidForm debt={debtUnitary} onDebtPaid={handleDebtPaid} />
-                        </BasicModal>
-                      )
-                    )}
-                  </MuiTableCell>
-                  <MuiTableCell align="center">
-                    {debtUnitary.status === 'PAID' ? (
-                      <span style={{ color: 'green' }}>PAGADA</span>
-                    ) : (
-                      <span style={{ color: 'red' }}>PENDIENTE</span>
-                    )}
-                  </MuiTableCell>
-                  <MuiTableCell align="center">
-                    {(Array.from(
-                      new Set(
-                        (debtUnitary.tool || [])
-                          .map(h => h?.typeTool?.name)
-                          .filter(Boolean)
-                      )
-                    ).join(', ')
-                    )
-                      || 'Sin herramientas'
-                    }
-                  </MuiTableCell>
-
-                </StyledBodyRow>
-              ))
-            )}
+            {renderDebtTableBody()}
           </TableBody>
         </Table>
       </TableContainer>

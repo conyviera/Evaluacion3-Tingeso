@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import {
     BarChart,
@@ -14,7 +15,7 @@ import {
 const BAR_COLORS = ['#4E7D10', '#6fa31a', '#90c930', '#b5e254', '#d4f07b', '#eaf7b0'];
 
 const CustomTooltip = ({ active, payload, label }) => {
-    if (active && payload && payload.length) {
+    if (active && payload?.length) {
         return (
             <Box
                 sx={{
@@ -36,6 +37,14 @@ const CustomTooltip = ({ active, payload, label }) => {
         );
     }
     return null;
+};
+
+CustomTooltip.propTypes = {
+    active: PropTypes.bool,
+    payload: PropTypes.arrayOf(PropTypes.shape({
+        value: PropTypes.number,
+    })),
+    label: PropTypes.string,
 };
 
 const Grafic = ({ data = [] }) => {
@@ -99,10 +108,10 @@ const Grafic = ({ data = [] }) => {
                             />
                             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(78,125,16,0.08)' }} />
                             <Bar dataKey="prestamos" radius={[4, 4, 0, 0]}>
-                                {chartData.map((_, index) => (
+                                {chartData.map((entry) => (
                                     <Cell
-                                        key={`cell-${index}`}
-                                        fill={BAR_COLORS[index % BAR_COLORS.length]}
+                                        key={`cell-${entry.name}`}
+                                        fill={BAR_COLORS[chartData.indexOf(entry) % BAR_COLORS.length]}
                                     />
                                 ))}
                             </Bar>
@@ -112,6 +121,12 @@ const Grafic = ({ data = [] }) => {
             )}
         </Box>
     );
+};
+Grafic.propTypes = {
+    data: PropTypes.arrayOf(PropTypes.shape({
+        toolName: PropTypes.string,
+        usageCount: PropTypes.number,
+    })),
 };
 
 export default Grafic;

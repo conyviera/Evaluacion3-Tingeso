@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import loanService from '../../services/loan.services';
 import toolServices from '../../services/tool.services';
 
@@ -13,6 +14,22 @@ import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import { Typography, Tooltip, Snackbar, Alert } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
+
+const parseErrorMessage = (error) => {
+  if (!error.response?.data) return error.message || 'Error de conexión al crear el préstamo.';
+  const { data } = error.response;
+  if (typeof data === 'string') return data;
+  if (data.message) return data.message;
+  if (data.error) return `Error del servidor: ${data.error}`;
+  return 'Error de conexión al crear el préstamo.';
+};
+
+const getLoanErrorField = (lowerMsg) => {
+  if (lowerMsg.includes('rut') || lowerMsg.includes('cliente')) return 'customerId';
+  if (lowerMsg.includes('herramienta')) return 'typeToolIds';
+  if (lowerMsg.includes('fecha')) return 'returnDate';
+  return null;
+};
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -127,7 +144,7 @@ function AddLoanForm({ onLoanAdded }) {
 
     const loanData = {
       typeToolIds: typeToolIds,
-      customerId: parseInt(customerId, 10),
+      customerId: Number.parseInt(customerId, 10),
       deliveryDate: deliveryDate,
       returnDate: returnDate
     };
@@ -145,35 +162,13 @@ function AddLoanForm({ onLoanAdded }) {
 
     } catch (error) {
       console.error('Error al crear el préstamo:', error);
+      const errorMsg = parseErrorMessage(error);
 
-      let errorMsg = "Error de conexión al crear el préstamo.";
-      if (error.response?.data) {
-        if (typeof error.response.data === 'string') {
-          errorMsg = error.response.data;
-        } else if (error.response.data.message) {
-          errorMsg = error.response.data.message;
-        } else if (error.response.data.error) {
-          errorMsg = `Error del servidor: ${error.response.data.error}`;
-        }
-      } else if (error.message) {
-        errorMsg = error.message;
-      }
+      setAlertConfig({ open: true, message: errorMsg, type: 'error' });
 
-      // Siempre mostrar el error en el Snackbar para que el usuario lo vea
-      setAlertConfig({
-        open: true,
-        message: errorMsg,
-        type: 'error'
-      });
-
-      // Además, si el error corresponde a un campo específico, lo marcamos
-      const lowerMsg = String(errorMsg).toLowerCase();
-      if (lowerMsg.includes('rut') || lowerMsg.includes('cliente')) {
-        setErrors(prev => ({ ...prev, customerId: errorMsg }));
-      } else if (lowerMsg.includes('herramienta')) {
-        setErrors(prev => ({ ...prev, typeToolIds: errorMsg }));
-      } else if (lowerMsg.includes('fecha')) {
-        setErrors(prev => ({ ...prev, returnDate: errorMsg }));
+      const field = getLoanErrorField(String(errorMsg).toLowerCase());
+      if (field) {
+        setErrors(prev => ({ ...prev, [field]: errorMsg }));
       }
     }
   };
@@ -261,27 +256,29 @@ function AddLoanForm({ onLoanAdded }) {
           {errors.customerId && <Typography variant="caption" color="error" display="block">{errors.customerId}</Typography>}
         </label>
 
-        <label>
+        <label htmlFor="loan-delivery-date">
           Fecha de Préstamo:
-          <input
-            className="input-style"
-            type="date"
-            value={deliveryDate}
-            onChange={(e) => { setDeliveryDate(e.target.value); setErrors({ ...errors, deliveryDate: '' }); }}
-          />
-          {errors.deliveryDate && <Typography variant="caption" color="error" display="block">{errors.deliveryDate}</Typography>}
         </label>
+        <input
+          id="loan-delivery-date"
+          className="input-style"
+          type="date"
+          value={deliveryDate}
+          onChange={(e) => { setDeliveryDate(e.target.value); setErrors({ ...errors, deliveryDate: '' }); }}
+        />
+        {errors.deliveryDate && <Typography variant="caption" color="error" display="block">{errors.deliveryDate}</Typography>}
 
-        <label>
+        <label htmlFor="loan-return-date">
           Fecha de Devolución:
-          <input
-            className="input-style"
-            type="date"
-            value={returnDate}
-            onChange={(e) => { setReturnDate(e.target.value); setErrors({ ...errors, returnDate: '' }); }}
-          />
-          {errors.returnDate && <Typography variant="caption" color="error" display="block">{errors.returnDate}</Typography>}
         </label>
+        <input
+          id="loan-return-date"
+          className="input-style"
+          type="date"
+          value={returnDate}
+          onChange={(e) => { setReturnDate(e.target.value); setErrors({ ...errors, returnDate: '' }); }}
+        />
+        {errors.returnDate && <Typography variant="caption" color="error" display="block">{errors.returnDate}</Typography>}
 
         <div>
           {calculatedAmount !== null && (
@@ -324,5 +321,9 @@ function AddLoanForm({ onLoanAdded }) {
     </div>
   );
 }
+
+AddLoanForm.propTypes = {
+  onLoanAdded: PropTypes.func,
+};
 
 export default AddLoanForm;

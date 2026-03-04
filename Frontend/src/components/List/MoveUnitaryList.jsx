@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from "react";
+
+const TYPE_MOVE_LABELS = {
+  LOAN: 'PRÉSTAMO',
+  TOOL_RETURN: 'DEVOLUCIÓN',
+  TOOL_REPAIR: 'REPARACIÓN',
+  TOOL_REGISTER: 'REGISTRO DE HERRAMIENTA',
+  TOOL_REMOVE: 'ELIMINACIÓN DE HERRAMIENTA',
+  DECOMMISSIONED: 'DADA DE BAJA',
+};
+
+const getTypeMoveLabel = (typeMove) => TYPE_MOVE_LABELS[typeMove] ?? 'OTRO';
 import { useParams } from 'react-router-dom';
 
 import kardexService from '../../services/kardex.services';
@@ -66,11 +77,70 @@ const MoveUnitaryList = () => {
   const { sortedItems, requestSort, sortConfig } = useSort(movement, { key: 'idKardex', direction: 'asc' });
 
   /*--------------------------Paginación-------------------- */
-  const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange, resetPage } = usePagination(sortedItems);
+  const { currentPage, totalPages, currentItems: itemsCurrentPage, itemsPerPage, handlePageChange, handleItemsPerPageChange } = usePagination(sortedItems);
 
 
   const createSortHandler = (property) => () => {
     requestSort(property);
+  };
+
+  const renderMoveBody = () => {
+    if (loading) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
+              <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
+              <Typography component="span" variant="body2" color="text.secondary">
+                Cargando datos...
+              </Typography>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    if (error) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
+              <Typography variant="body2" color="error" sx={{ mb: 1 }}>
+                {typeof error === 'string' ? error : "Error al mostrar datos"}
+              </Typography>
+              <Button variant="outlined" color="error" size="small" onClick={() => setReload(!reload)} startIcon={<RefreshIcon />}>
+                Reintentar
+              </Button>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    if (itemsCurrentPage.length === 0) {
+      return (
+        <React.Fragment>
+          <TableRow>
+            <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
+              <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
+                No se encontraron movimientos para esta herramienta.
+              </Typography>
+            </MuiTableCell>
+          </TableRow>
+        </React.Fragment>
+      );
+    }
+    return (
+      <React.Fragment>
+        {itemsCurrentPage.map((move) => (
+          <StyledBodyRow key={move.idKardex}>
+            <MuiTableCell align="center">{move.idKardex}</MuiTableCell>
+            <MuiTableCell align="center">{getTypeMoveLabel(move.typeMove)}</MuiTableCell>
+            <MuiTableCell align="center">{formatDateTime(move.date)}</MuiTableCell>
+            <MuiTableCell align="center">{move.loan?.idLoan || 'Sin prestamo asociado'}</MuiTableCell>
+            <MuiTableCell align="center">{move.user?.username || 'Sin usuario'}</MuiTableCell>
+          </StyledBodyRow>
+        ))}
+      </React.Fragment>
+    );
   };
 
   return (
@@ -141,51 +211,7 @@ const MoveUnitaryList = () => {
               </TableRow>
             </StyledTableHead>
             <TableBody>
-              {loading ? (
-                <TableRow>
-                  <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                    <CircularProgress size={28} sx={{ color: '#4E7D10', mr: 1.5, verticalAlign: 'middle' }} />
-                    <Typography component="span" variant="body2" color="text.secondary">
-                      Cargando datos...
-                    </Typography>
-                  </MuiTableCell>
-                </TableRow>
-              ) : error ? (
-                <TableRow>
-                  <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                    <Typography variant="body2" color="error" sx={{ mb: 1 }}>
-                      {typeof error === 'string' ? error : "Error al mostrar datos"}
-                    </Typography>
-                    <Button variant="outlined" color="error" size="small" onClick={() => setReload(!reload)} startIcon={<RefreshIcon />}>
-                      Reintentar
-                    </Button>
-                  </MuiTableCell>
-                </TableRow>
-              ) : itemsCurrentPage.length === 0 ? (
-                <TableRow>
-                  <MuiTableCell colSpan={5} align="center" sx={{ py: 4 }}>
-                    <Typography variant="body1" color="text.secondary" sx={{ mb: 1 }}>
-                      No se encontraron movimientos para esta herramienta.
-                    </Typography>
-                  </MuiTableCell>
-                </TableRow>
-              ) : (
-                itemsCurrentPage.map((move) => (
-                  <StyledBodyRow key={move.idKardex}>
-                    <MuiTableCell align="center">{move.idKardex}</MuiTableCell>
-                    <MuiTableCell align="center">{move.typeMove === 'LOAN' ? 'PRÉSTAMO'
-                      : move.typeMove === 'TOOL_RETURN' ? 'DEVOLUCIÓN'
-                        : move.typeMove === 'TOOL_REPAIR' ? 'REPARACIÓN'
-                          : move.typeMove === 'TOOL_REGISTER' ? 'REGISTRO DE HERRAMIENTA'
-                            : move.typeMove === 'TOOL_REMOVE' ? 'ELIMINACIÓN DE HERRAMIENTA'
-                              : move.typeMove === 'DECOMMISSIONED' ? 'DADA DE BAJA'
-                                : 'OTRO'}</MuiTableCell>
-                    <MuiTableCell align="center">{formatDateTime(move.date)}</MuiTableCell>
-                    <MuiTableCell align="center">{move.loan?.idLoan || 'Sin prestamo asociado'}</MuiTableCell>
-                    <MuiTableCell align="center">{move.user?.username || 'Sin usuario'}</MuiTableCell>
-                  </StyledBodyRow>
-                ))
-              )}
+              {renderMoveBody()}
             </TableBody>
           </Table>
         </TableContainer>

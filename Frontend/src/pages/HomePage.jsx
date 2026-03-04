@@ -30,8 +30,6 @@ import customerService from '../services/customer.services';
 const HomePage = () => {
   const [topTools, setTopTools] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [totalCustomers, setTotalCustomers] = useState(0);
-  const [activeCustomers, setActiveCustomers] = useState(0); // Mantenemos por si lo necesitas
   const [totalLoans, setTotalLoans] = useState(0);
   const [expiredLoans, setExpiredLoans] = useState(0);
   const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'warning' });
@@ -44,28 +42,20 @@ const HomePage = () => {
     setLoading(true);
     try {
       if (start && end) {
-        const [resTotal, resActive, resLoans, resExpired, resTop] = await Promise.all([
-          customerService.countCustomer(),
-          customerService.countActiveCustomers(),
+        const [resLoans, resExpired, resTop] = await Promise.all([
           loanService.countActiveLoansByDeliveryDateBetween(start, end),
           loanService.countExpiredLoansByDeliveryDateBetween(start, end),
           loanService.getTopToolsByDeliveryDateBetween(start, end)
         ]);
-        setTotalCustomers(resTotal.data || 0);
-        setActiveCustomers(resActive.data || 0);
         setTotalLoans(resLoans.data || 0);
         setExpiredLoans(resExpired.data || 0);
         setTopTools(resTop.data || []);
       } else {
-        const [resTotal, resActive, resLoans, resExpired, resTop] = await Promise.all([
-          customerService.countCustomer(),
-          customerService.countActiveCustomers(),
+        const [resLoans, resExpired, resTop] = await Promise.all([
           loanService.countActiveLoans(),
           loanService.countExpiredLoans(),
           loanService.getTopTools()
         ]);
-        setTotalCustomers(resTotal.data || 0);
-        setActiveCustomers(resActive.data || 0);
         setTotalLoans(resLoans.data || 0);
         setExpiredLoans(resExpired.data || 0);
         setTopTools(resTop.data || []);
@@ -112,6 +102,14 @@ const HomePage = () => {
     boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.1)'
   };
 
+  const headerArea = '1 / 1 / 2 / 7';
+  const statsArea = '2 / 1 / 3 / 5';
+  const rankingArea = '2 / 5 / 8 / 7';
+  const chartArea = '3 / 1 / 8 / 5';
+
+  const activeBoxStyle = { ...slotStyle, flex: 1, gridArea: 'unset' };
+  const expiredBoxStyle = { ...slotStyle, flex: 1, gridArea: 'unset', color: '#d32f2f', border: '1px solid #f5c6cb' };
+
   if (loading) {
     return (
       <Box sx={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -135,7 +133,7 @@ const HomePage = () => {
       }}
     >
       {/* div1: Cabecera (Fila superior completa) */}
-      <Box sx={{ gridArea: '1 / 1 / 2 / 7', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+      <Box sx={{ gridArea: headerArea, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Reporte de herramientas {dateRange[0] && dateRange[1] ? dateRange[0].format('DD/MM/YY') + ' - ' + dateRange[1].format('DD/MM/YY') : ''}</Typography>
 
         {/* Filtro */}
@@ -185,22 +183,19 @@ const HomePage = () => {
         </Box>
       </Box>
 
-      {/* Top Stats Area */}
-      <Box sx={{ gridArea: '2 / 1 / 3 / 5', display: 'flex', gap: 2 }}>
-        {/* Préstamos activos */}
-        <Box sx={{ ...slotStyle, flex: 1, gridArea: 'unset' }}>
-          <Typography variant="caption">Préstamos activos</Typography>
+      <Box sx={{ gridArea: statsArea, display: 'flex', gap: 2 }}>
+        <Box sx={activeBoxStyle}>
+          <Typography variant="caption">{"Prestamos activos"}</Typography>
           <Typography variant="h5">{totalLoans}</Typography>
         </Box>
-        {/* Préstamos vencidos */}
-        <Box sx={{ ...slotStyle, flex: 1, gridArea: 'unset' }}>
-          <Typography variant="caption" sx={{ color: '#d32f2f' }}>Préstamos vencidos</Typography>
+        <Box sx={expiredBoxStyle}>
+          <Typography variant="caption" sx={{ color: '#d32f2f' }}>{"Prestamos vencidos"}</Typography>
           <Typography variant="h5" sx={{ color: '#d32f2f' }}>{expiredLoans}</Typography>
         </Box>
       </Box>
 
       {/* div4: Ranking (Tabla - Lado derecho alto) */}
-      <Box sx={{ gridArea: '2 / 5 / 8 / 7', minHeight: 0 }}>
+      <Box sx={{ gridArea: rankingArea, minHeight: 0 }}>
         <TableContainer
           component={Paper}
           sx={{
@@ -221,9 +216,9 @@ const HomePage = () => {
             </StyledTableHead>
             <TableBody>
               {topTools.length > 0 ? (
-                topTools.map((row, index) => (
-                  <StyledBodyRow key={index}>
-                    <TableCell align="center">{index + 1}</TableCell>
+                topTools.map((row) => (
+                  <StyledBodyRow key={row.toolName}>
+                    <TableCell align="center">{topTools.indexOf(row) + 1}</TableCell>
                     <TableCell align="center">{row.toolName}</TableCell>
                     <TableCell align="center" sx={{ fontWeight: 'bold' }}>{row.usageCount}</TableCell>
                   </StyledBodyRow>
@@ -240,8 +235,7 @@ const HomePage = () => {
         </TableContainer>
       </Box>
 
-      {/* div5: Gráfico (Área central/inferior izquierda) */}
-      <Box sx={{ gridArea: '3 / 1 / 8 / 5', bgcolor: '#ffffffff', borderRadius: 2, minHeight: 0 }}>
+      <Box sx={{ gridArea: chartArea, bgcolor: '#ffffffff', borderRadius: 2, minHeight: 0 }}>
         <Grafic data={topTools} />
       </Box>
 

@@ -25,7 +25,6 @@ import dayjs from 'dayjs';
 
 function KardexPage() {
 
-    const [open, setOpen] = useState(false);
     const [kardex, setKardex] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

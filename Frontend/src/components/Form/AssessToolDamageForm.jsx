@@ -1,17 +1,10 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import toolServices from '../../services/tool.services.js';
 
 function AssessToolDamageForm({ tool, onAssessmentComplete }) {
     const [outcome, setOutcome] = useState('');
     const [damageCharge, setDamageCharge] = useState('');
-    const [alertConfig, setAlertConfig] = useState({ open: false, message: '', type: 'success' });
-
-    const handleCloseAlert = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setAlertConfig({ ...alertConfig, open: false });
-    };
 
     if (!tool) {
         return null;
@@ -24,9 +17,9 @@ function AssessToolDamageForm({ tool, onAssessmentComplete }) {
             try {
                 let finalCharge = 0;
                 if (damageCharge !== '') {
-                    finalCharge = parseInt(damageCharge);
+                    finalCharge = Number.parseInt(damageCharge, 10);
                 }
-                if (isNaN(finalCharge)) {
+                if (Number.isNaN(finalCharge)) {
                     finalCharge = 0;
                 }
 
@@ -56,8 +49,8 @@ function AssessToolDamageForm({ tool, onAssessmentComplete }) {
     return (
         <form onSubmit={handleSubmit}>
             <div>
-                <label>Resultado de la evaluación: </label>
-                <select className="input-style" value={outcome} onChange={(e) => setOutcome(e.target.value)} required>
+                <label htmlFor="damage-outcome">Resultado de la evaluación: </label>
+                <select id="damage-outcome" className="input-style" value={outcome} onChange={(e) => setOutcome(e.target.value)} required>
                     <option value="">Seleccione una opción</option>
                     <option value="IRREPARABLE">Daño irreparable</option>
                     <option value="MINOR_DAMAGE">Daño menor</option>
@@ -65,8 +58,9 @@ function AssessToolDamageForm({ tool, onAssessmentComplete }) {
             </div>
             {outcome !== 'IRREPARABLE' && (
                 <div>
-                    <label>Cargos por daño (si aplica): </label>
+                    <label htmlFor="damage-charge">Cargos por daño (si aplica): </label>
                     <input
+                        id="damage-charge"
                         type="number"
                         value={damageCharge}
                         className="input-style"
@@ -92,5 +86,12 @@ function AssessToolDamageForm({ tool, onAssessmentComplete }) {
         </form>
     );
 }
-export default AssessToolDamageForm;
 
+AssessToolDamageForm.propTypes = {
+    tool: PropTypes.shape({
+        idTool: PropTypes.number,
+    }),
+    onAssessmentComplete: PropTypes.func.isRequired,
+};
+
+export default AssessToolDamageForm;

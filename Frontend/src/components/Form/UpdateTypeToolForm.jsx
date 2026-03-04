@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, FormControlLabel, TextField, Box, Typography } from '@mui/material';
+import PropTypes from 'prop-types';
+import { Button, FormControlLabel, Checkbox, TextField, Box, Typography } from '@mui/material';
 import toolServices from '../../services/tool.services';
 import ButtonAlert from '../Styles/ButtonAlert';
 
@@ -40,7 +41,7 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
     try {
 
       if (selected.dailyRate && values.dailyRate) {
-        const rate = parseInt(values.dailyRate, 10);
+        const rate = Number.parseInt(values.dailyRate, 10);
 
         await toolServices.configurationDailyRateTypeTool(idTypeTool, rate);
         hayCambios = true;
@@ -48,13 +49,13 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
 
 
       if (selected.debtRate && values.debtRate) {
-        const rate = parseInt(values.debtRate, 10);
+        const rate = Number.parseInt(values.debtRate, 10);
         await toolServices.configurationDebtTypeTool(idTypeTool, rate);
         hayCambios = true;
       }
 
       if (selected.replacementRate && values.replacementRate) {
-        const rate = parseInt(values.replacementRate, 10);
+        const rate = Number.parseInt(values.replacementRate, 10);
         await toolServices.registerReplacementTypeTool(idTypeTool, rate);
         hayCambios = true;
       }
@@ -76,20 +77,10 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
       onUpdate();
 
     } catch (error) {
-      console.error("Error al actualizar:", error);
-      if (error.response && error.response.data) {
-        setAlertConfig({
-          open: true,
-          message: error.response.data,
-          type: 'error'
-        });
-      } else {
-        setAlertConfig({
-          open: true,
-          message: 'Hubo un error al actualizar uno o más campos.',
-          type: 'error'
-        });
-      }
+      const msg = error.response?.data
+        ? error.response.data
+        : 'Hubo un error al actualizar uno o más campos.';
+      setAlertConfig({ open: true, message: msg, type: 'error' });
     }
   };
 
@@ -99,12 +90,17 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
 
       <div className="form-data">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Checkbox
-            checked={selected.dailyRate}
-            onChange={handleCheckChange}
-            name="dailyRate"
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={selected.dailyRate}
+                onChange={handleCheckChange}
+                name="dailyRate"
+              />
+            }
+            label="Editar Tarifa Diaria:"
+            style={{ margin: 0 }}
           />
-          <label style={{ margin: 0 }}>Editar Tarifa Diaria:</label>
         </div>
 
         <TextField
@@ -122,12 +118,17 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
 
       <Box className="form-data">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Checkbox
-            checked={selected.debtRate}
-            onChange={handleCheckChange}
-            name="debtRate"
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={selected.debtRate}
+                onChange={handleCheckChange}
+                name="debtRate"
+              />
+            }
+            label="Editar Multa Atraso:"
+            style={{ margin: 0 }}
           />
-          <label style={{ margin: 0 }}>Editar Multa Atraso:</label>
         </div>
         <TextField
           label="Costo por Atraso"
@@ -144,12 +145,17 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
 
       <div className="form-data">
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Checkbox
-            checked={selected.replacementRate}
-            onChange={handleCheckChange}
-            name="replacementRate"
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={selected.replacementRate}
+                onChange={handleCheckChange}
+                name="replacementRate"
+              />
+            }
+            label="Editar Reposición:"
+            style={{ margin: 0 }}
           />
-          <label style={{ margin: 0 }}>Editar Reposición:</label>
         </div>
         <TextField
           label="Valor Reposición"
@@ -176,4 +182,10 @@ function UpdateTypeToolForm({ idTypeTool, onUpdate }) {
     </div>
   );
 }
+
+UpdateTypeToolForm.propTypes = {
+  idTypeTool: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onUpdate: PropTypes.func.isRequired,
+};
+
 export default UpdateTypeToolForm;

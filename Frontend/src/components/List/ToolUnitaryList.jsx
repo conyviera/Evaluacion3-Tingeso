@@ -22,6 +22,54 @@ import AssessToolDamageForm from '../Form/AssessToolDamageForm';
 import { StyledTableHead, StyledHeaderCell, StyledBodyRow } from '../Styles/TableStyles';
 import { paginationStyles } from '../Styles/PaginationStyles.jsx';
 
+const renderToolState = (state) => {
+  if (state === 'AVAILABLE') return 'DISPONIBLE';
+  if (state === 'ON_LOAN') return 'PRESTADA';
+  if (state === 'UNDER_REPAIR') return 'EN REPARACIÓN';
+  if (state === 'DECOMMISSIONED') return 'DADA DE BAJA';
+  return 'OTRO';
+};
+
+const renderToolAction = (toolItem, onUpdate) => {
+  if (toolItem.state === 'AVAILABLE') {
+    return (
+      <BasicModal
+        button={
+          <IconButton
+            sx={{ color: '#d32f2f', '&:hover': { filter: 'drop-shadow(0 0 5px red)' } }}
+            title="Dar de baja"
+          >
+            <BlockOutlinedIcon />
+          </IconButton>
+        }
+      >
+        <DeactivateUnusedTool id={toolItem.idTool} onUpdate={onUpdate} />
+      </BasicModal>
+    );
+  }
+  if (toolItem.state === 'UNDER_REPAIR') {
+    return (
+      <BasicModal
+        button={
+          <IconButton
+            sx={{ color: '#d32f2f', '&:hover': { filter: 'drop-shadow(0 0 5px red)' } }}
+            title="Evaluar daño"
+          >
+            <CarpenterIcon />
+          </IconButton>
+        }
+      >
+        <AssessToolDamageForm tool={toolItem} onAssessmentComplete={onUpdate} />
+      </BasicModal>
+    );
+  }
+  return (
+    <Typography variant="body2" color="textSecondary">
+      Reparación no disponible
+    </Typography>
+  );
+};
+
 // COMPONENTE PRINCIPAL
 const ToolUnitaryList = () => {
 
@@ -156,10 +204,7 @@ const ToolUnitaryList = () => {
                 itemsCurrentPage.map((toolItem) => (
                   <StyledBodyRow key={toolItem.idTool}>
                     <MuiTableCell align="center">{toolItem.idTool}</MuiTableCell>
-                    <MuiTableCell align="center">{toolItem.state === 'AVAILABLE' ? 'DISPONIBLE'
-                      : toolItem.state === 'ON_LOAN' ? 'PRESTADA'
-                        : toolItem.state === 'UNDER_REPAIR' ? 'EN REPARACIÓN'
-                          : toolItem.state === 'DECOMMISSIONED' ? 'DADA DE BAJA' : 'OTRO'}</MuiTableCell>
+                    <MuiTableCell align="center">{renderToolState(toolItem.state)}</MuiTableCell>
                     <MuiTableCell align="center">
 
                       <IconButton
@@ -171,47 +216,7 @@ const ToolUnitaryList = () => {
                       </IconButton>
                     </MuiTableCell>
                     <MuiTableCell align="center">
-                      {
-                        toolItem.state === 'AVAILABLE' ? (
-                          <BasicModal
-                            button={
-                              <IconButton
-                                sx={{
-                                  color: '#d32f2f',
-                                  '&:hover': { filter: 'drop-shadow(0 0 5px red)' }
-                                }}
-                                title="Dar de baja"
-                              >
-                                <BlockOutlinedIcon />
-                              </IconButton>
-                            }
-                          >
-                            <DeactivateUnusedTool id={toolItem.idTool} onUpdate={handleToolUpdate} />
-                          </BasicModal>
-                        ) : (toolItem.state === 'UNDER_REPAIR' ? (
-                          <BasicModal
-                            button={
-                              <IconButton
-                                sx={{
-                                  color: '#d32f2f',
-                                  '&:hover': { filter: 'drop-shadow(0 0 5px red)' }
-                                }}
-                                title="Evaluar daño"
-                              >
-                                <CarpenterIcon />
-                              </IconButton>
-                            }
-                          >
-                            <AssessToolDamageForm tool={toolItem} onAssessmentComplete={handleToolUpdate} />
-                          </BasicModal>
-                        ) : (
-                          <Typography variant="body2" color="textSecondary">
-                            Reparación no disponible
-                          </Typography>
-                        )
-                        )
-                      }
-
+                      {renderToolAction(toolItem, handleToolUpdate)}
                     </MuiTableCell>
                   </StyledBodyRow>
                 ))

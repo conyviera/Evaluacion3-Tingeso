@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -52,5 +53,10 @@ function Modal({ button, children }) {
     </div>
   );
 }
+
+Modal.propTypes = {
+  button: PropTypes.node.isRequired,
+  children: PropTypes.node,
+};
 
 export default Modal;

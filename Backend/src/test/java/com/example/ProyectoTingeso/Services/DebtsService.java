@@ -182,9 +182,8 @@ class DebtsServiceTest {
         List<ToolEntity> tools = List.of(tool);
 
         // When & Then
-        assertThatThrownBy(() ->
-                debtsService.registerDebts(5000, "ARREARS", LocalDate.now(), "PENDING", null, customer, tools)
-        )
+        LocalDate today = LocalDate.now();
+        assertThatThrownBy(() -> debtsService.registerDebts(5000, "ARREARS", today, "PENDING", null, customer, tools))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Parámetros requeridos nulos.");
 
@@ -200,9 +199,9 @@ class DebtsServiceTest {
         List<ToolEntity> tools = List.of(tool);
 
         // When & Then
-        assertThatThrownBy(() ->
-                debtsService.registerDebts(5000, "ARREARS", LocalDate.now(), "PENDING", loan, differentCustomer, tools)
-        )
+        LocalDate today = LocalDate.now();
+        assertThatThrownBy(
+                () -> debtsService.registerDebts(5000, "ARREARS", today, "PENDING", loan, differentCustomer, tools))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("El cliente no corresponde al préstamo.");
 
@@ -216,9 +215,7 @@ class DebtsServiceTest {
         List<ToolEntity> tools = List.of(tool);
 
         // When & Then
-        assertThatThrownBy(() ->
-                debtsService.registerDebts(5000, "ARREARS", null, "PENDING", loan, customer, tools)
-        )
+        assertThatThrownBy(() -> debtsService.registerDebts(5000, "ARREARS", null, "PENDING", loan, customer, tools))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Parámetros requeridos nulos.");
     }
@@ -317,7 +314,6 @@ class DebtsServiceTest {
         verify(debtsRepository).findById(debtId);
         verify(debtsRepository).save(any(DebtsEntity.class));
     }
-
 
     @Test
     @DisplayName("Cuando se intenta pagar deuda inexistente, entonces lanza excepción")
