@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/v1/customers") // Ajusta la ruta base según tu preferencia
+@RequestMapping("/api/v1/customers")
 @CrossOrigin(origins = {
         "http://localhost:5173",
         "http://localhost:8008",
@@ -32,16 +32,14 @@ public class CustomerController {
      */
     @PostMapping("/registerCustomer")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> registerCustomer(@RequestBody Map<String, Object> customerPayload) {
+    public ResponseEntity<Object> registerCustomer(@RequestBody Map<String, Object> customerPayload) {
         try {
             String name = (String) customerPayload.get("name");
             String phoneNumber = (String) customerPayload.get("phoneNumber");
             String email = (String) customerPayload.get("email");
             String rut = (String) customerPayload.get("rut");
 
-
             CustomerEntity saved = customerService.registerCustomer(name, phoneNumber, email, rut);
-
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
 
         } catch (IllegalStateException | IllegalArgumentException e) {
@@ -54,11 +52,11 @@ public class CustomerController {
     }
 
     /**
-     *
+     * RF 3.2
      */
     @GetMapping("/getAll")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> getAllCustomers() {
+    public ResponseEntity<Object> getAllCustomers() {
         try {
             List<CustomerEntity> customers = customerService.getAllCustomer();
             return ResponseEntity.ok(customers);
@@ -74,7 +72,7 @@ public class CustomerController {
      */
     @GetMapping("/state/{id}")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> getStateCustomer(@PathVariable Long id) {
+    public ResponseEntity<Object> getStateCustomer(@PathVariable Long id) {
         try {
             Boolean isActive = customerService.getStateCustomer(id);
             return ResponseEntity.ok(isActive);
@@ -90,7 +88,7 @@ public class CustomerController {
 
     @GetMapping("/count")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> countCustomer (){
+    public ResponseEntity<Object> countCustomer() {
         try {
             int number = Math.toIntExact(customerService.countAllCustomer());
             return ResponseEntity.ok(number);
@@ -106,7 +104,7 @@ public class CustomerController {
 
     @GetMapping("/countActive")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<?> countActiveCustomer (){
+    public ResponseEntity<Object> countActiveCustomer() {
         try {
             int number = customerService.countAllByActive();
             return ResponseEntity.ok(number);
@@ -119,8 +117,4 @@ public class CustomerController {
                     .body("Error en entregar la información " + e.getMessage());
         }
     }
-
-
-
-
 }

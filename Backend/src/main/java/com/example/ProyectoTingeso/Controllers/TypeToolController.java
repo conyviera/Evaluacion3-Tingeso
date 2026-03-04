@@ -21,6 +21,8 @@ import java.util.Map;
 })
 public class TypeToolController {
 
+    private static final String ERROR_INTERNO = "Error interno: ";
+
     private final TypeToolService typeToolService;
 
     public TypeToolController(TypeToolService typeToolService) {
@@ -32,10 +34,11 @@ public class TypeToolController {
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/configurationDailyRateTypeTool/{idTypeTool}")
-    public ResponseEntity<?> configurationDailyRateTypeTool(@PathVariable Long idTypeTool, @RequestBody Map<String, Object> payload) {
+    public ResponseEntity<Object> configurationDailyRateTypeTool(
+            @PathVariable Long idTypeTool,
+            @RequestBody Map<String, Object> payload) {
         try {
             int dailyRate = payload.get("dailyRate") != null ? ((Number) payload.get("dailyRate")).intValue() : -1;
-
             return ResponseEntity.ok(typeToolService.configurationDailyRateTypeTool(idTypeTool, dailyRate));
 
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -43,20 +46,20 @@ public class TypeToolController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(ERROR_INTERNO + e.getMessage());
         }
     }
-
 
     /**
      * RF 4.2
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/configurationDebtTypeTool/{idTypeTool}")
-    public ResponseEntity<?> configurationDebtTypeTool(@PathVariable Long idTypeTool, @RequestBody Map<String, Object> payload) {
+    public ResponseEntity<Object> configurationDebtTypeTool(
+            @PathVariable Long idTypeTool,
+            @RequestBody Map<String, Object> payload) {
         try {
             int debtRate = payload.get("debtRate") != null ? ((Number) payload.get("debtRate")).intValue() : -1;
-
             return ResponseEntity.ok(typeToolService.configurationDebtTypeTool(idTypeTool, debtRate));
 
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -64,7 +67,7 @@ public class TypeToolController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(ERROR_INTERNO + e.getMessage());
         }
     }
 
@@ -72,11 +75,14 @@ public class TypeToolController {
      * RF 4.3
      */
     @PreAuthorize("hasRole('ADMIN')")
-    @PutMapping ("/registerReplacementTypeTool/{idTypeTool}")
-    public ResponseEntity<?> registerReplacementTypeTool(@PathVariable Long idTypeTool, @RequestBody Map<String, Object> payload){
+    @PutMapping("/registerReplacementTypeTool/{idTypeTool}")
+    public ResponseEntity<Object> registerReplacementTypeTool(
+            @PathVariable Long idTypeTool,
+            @RequestBody Map<String, Object> payload) {
         try {
-            int replacementValue = payload.get("replacementValue") != null ? ((Number) payload.get("replacementValue")).intValue() : -1;
-
+            int replacementValue = payload.get("replacementValue") != null
+                    ? ((Number) payload.get("replacementValue")).intValue()
+                    : -1;
             return ResponseEntity.ok(typeToolService.registerReplacementTypeTool(idTypeTool, replacementValue));
 
         } catch (IllegalArgumentException | IllegalStateException e) {
@@ -84,7 +90,7 @@ public class TypeToolController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(ERROR_INTERNO + e.getMessage());
         }
     }
 
@@ -93,13 +99,13 @@ public class TypeToolController {
      */
     @GetMapping("/getTypeToolById/{idTypeTool}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<?> getTypeToolById(@PathVariable Long idTypeTool) {
+    public ResponseEntity<Object> getTypeToolById(@PathVariable Long idTypeTool) {
         try {
             return ResponseEntity.ok(typeToolService.getTypeToolById(idTypeTool));
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error interno: " + e.getMessage());
+            return ResponseEntity.internalServerError().body(ERROR_INTERNO + e.getMessage());
         }
     }
 
@@ -108,7 +114,7 @@ public class TypeToolController {
      */
     @GetMapping("/getAllTypeTools")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<List<TypeToolEntity>> getAllTool(){
+    public ResponseEntity<List<TypeToolEntity>> getAllTool() {
         return ResponseEntity.ok(typeToolService.getAllTypeTools());
     }
 
@@ -117,7 +123,7 @@ public class TypeToolController {
      */
     @GetMapping("/getAllCategory")
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
-    public ResponseEntity<List<String>> getTypeToolCategory(){
+    public ResponseEntity<List<String>> getTypeToolCategory() {
         return ResponseEntity.ok(typeToolService.getAllTypeToolCategory());
     }
 }

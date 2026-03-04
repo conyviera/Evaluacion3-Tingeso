@@ -13,9 +13,30 @@ import DeactivateUnusedTool from './components/Form/DeactivateUnusedToolForm';
 import UpdateTypeToolForm from './components/Form/UpdateTypeToolForm';
 import DebtList from './components/List/DebtList';
 import NotFoundPage from './pages/NotFoundPage';
+import { useEffect } from 'react';
+
+
 function App() {
   const { keycloak, initialized } = useKeycloak();
-
+  useEffect(() => {
+    try {
+      // Inyectamos el script de Clarity manualmente para poder detectar si fue bloqueado
+      const script = document.createElement('script');
+      script.src = 'https://www.clarity.ms/tag/j788054821';
+      script.async = true;
+      script.onload = () => {
+        // El script cargó correctamente, Clarity ya se inicializa automáticamente
+        console.log('Microsoft Clarity cargado correctamente.');
+      };
+      script.onerror = () => {
+        // El script fue bloqueado por el navegador (ej: protección de seguimiento)
+        console.warn('Microsoft Clarity bloqueado por el navegador. Las métricas no estarán disponibles.');
+      };
+      document.head.appendChild(script);
+    } catch (error) {
+      console.warn('Error al intentar cargar Clarity:', error);
+    }
+  }, []);
   if (!initialized) return <div>Cargando...</div>;
 
   const isLoggedIn = keycloak.authenticated;

@@ -16,6 +16,8 @@ import java.util.*;
 
 @Service
 public class LoanService {
+    private static final String STATE_ACTIVE = "ACTIVE";
+    private static final String STATE_RETURNED = "RETURNED";
     private final ToolRepository toolRepo;
     private final LoanRepository loanRepo;
     private final DebtsRepository debtsRepo;
@@ -25,7 +27,9 @@ public class LoanService {
     private final CustomerService customerService;
 
     @Autowired
-    public LoanService(ToolRepository toolRepo, LoanRepository loanRepo, DebtsRepository debtsRepo,  DebtsService debtsService, KardexService kardexService,  TypeToolRepository typeToolRepo, CustomerService customerService) {
+    public LoanService(ToolRepository toolRepo, LoanRepository loanRepo, DebtsRepository debtsRepo,
+            DebtsService debtsService, KardexService kardexService, TypeToolRepository typeToolRepo,
+            CustomerService customerService) {
         this.toolRepo = toolRepo;
         this.loanRepo = loanRepo;
         this.debtsRepo = debtsRepo;
@@ -36,8 +40,9 @@ public class LoanService {
     }
 
     /**
-     *  RF2.1: Record a loan by associating the customer and tool,
-     *  with the delivery date and agreed return date.
+     * RF2.1: Record a loan by associating the customer and tool,
+     * with the delivery date and agreed return date.
+     * 
      * @param typeToolId
      * @param customer
      * @param deliveryDate
@@ -46,9 +51,9 @@ public class LoanService {
      */
 
     @Transactional
-    public LoanEntity createLoan(List<Long> typeToolId, CustomerEntity customer, LocalDate deliveryDate, LocalDate returnDate) {
+    public LoanEntity createLoan(List<Long> typeToolId, CustomerEntity customer, LocalDate deliveryDate,
+            LocalDate returnDate) {
 
-        LocalDate today = LocalDate.now();
         LoanEntity loan = new LoanEntity();
         List<ToolEntity> tools = new ArrayList<>();
         List<TypeToolEntity> typeToolList = new ArrayList<>();
@@ -57,7 +62,8 @@ public class LoanService {
 
         for (Long typetoolId : typeToolId) {
             TypeToolEntity typetool = typeToolRepo.findById(typetoolId)
-                    .orElseThrow(() -> new IllegalArgumentException("No existe tipo de herramienta con ese ID: " + typetoolId));
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "No existe tipo de herramienta con ese ID: " + typetoolId));
 
             typeToolList.add(typetool);
         }
@@ -65,11 +71,9 @@ public class LoanService {
         loan.setDeliveryDate(deliveryDate);
         loan.setReturnDate(returnDate);
         loan.setCustomer(customer);
-        loan.setState("ACTIVE");
+        loan.setState(STATE_ACTIVE);
 
-
-        loan.setRentalAmount(RentalAmount(typeToolId, deliveryDate, returnDate));
-
+        loan.setRentalAmount(calculateRentalAmount(typeToolId, deliveryDate, returnDate));
 
         for (TypeToolEntity typeTool : typeToolList) {
 
@@ -85,7 +89,7 @@ public class LoanService {
         LoanEntity save = loanRepo.save(loan);
         kardexService.registerLoan(save);
 
-        //Check if a date that has already expired is entered.
+        // Check if a date that has already expired is entered.
         customerService.restrictClient(customer);
 
         return save;
@@ -93,49 +97,52 @@ public class LoanService {
 
     /**
      * RF2.2: Validate availability before authorizing the loan
+     * 
      * @param customer
      * @param deliveryDate
      * @param returnDate
      * @return
      */
 
-    public void validateLoanAvailability ( CustomerEntity customer, LocalDate deliveryDate, LocalDate returnDate){
+    public void validateLoanAvailability(CustomerEntity customer, LocalDate deliveryDate, LocalDate returnDate) {
 
-        if(!(customerActive(customer))){
+        if (!(customerActive(customer))) {
             throw new IllegalArgumentException("El cliente esta restringido");
         }
 
-        if(expiredLoan(customer)){
+        if (expiredLoan(customer)) {
             throw new IllegalArgumentException("El cliente tiene prestamos vencidos");
         }
 
-        if(customerService.customerLoanExpired( customer.getRut())){
+        if (customerService.customerLoanExpired(customer.getRut())) {
             customerService.restrictClient(customer);
             throw new IllegalArgumentException("El cliente tiene atrasos no regularizados");
         }
 
-        if(!(customerLoanSize(customer))){
+        if (!(customerLoanSize(customer))) {
             throw new IllegalArgumentException("El cliente tiene 5 prestamos activos");
         }
 
-        if(returnDateIsBeforeDeliveryDate(deliveryDate, returnDate)){
-            throw new IllegalArgumentException("La fecha de retorno debe ser posterior a la fecha de entrega de la herramienta");
+        if (returnDateIsBeforeDeliveryDate(deliveryDate, returnDate)) {
+            throw new IllegalArgumentException(
+                    "La fecha de retorno debe ser posterior a la fecha de entrega de la herramienta");
         }
 
-        if (!(customerHasNoPendingDebts(customer))){
+        if (!(customerHasNoPendingDebts(customer))) {
             throw new IllegalArgumentException("El cliente tiene deudas pendientes");
         }
-
     }
 
     /**
-     * Helper 2.2: Verify that the tool is in stock and that there are no current loans already in place for the same tool.
+     * Helper 2.2: Verify that the tool is in stock and that there are no current
+     * loans already in place for the same tool.
+     * 
      * @param typeTool
      * @param customer
      * @return
      */
-    public ToolEntity validateToolAvailability(TypeToolEntity typeTool, CustomerEntity customer){
-        if(customerToolActive(typeTool,  customer)){
+    public ToolEntity validateToolAvailability(TypeToolEntity typeTool, CustomerEntity customer) {
+        if (customerToolActive(typeTool, customer)) {
             throw new IllegalArgumentException("El cliente prestamos vigentes con esta herramienta");
         }
 
@@ -144,13 +151,15 @@ public class LoanService {
     }
 
     /**
-     * Helper 2.2: A customer may not borrow more than one unit of the same tool at a time.
+     * Helper 2.2: A customer may not borrow more than one unit of the same tool at
+     * a time.
+     * 
      * @param typeTool
      * @param customer
      * @return
      */
-    private boolean customerToolActive (TypeToolEntity typeTool, CustomerEntity customer){
-        List<LoanEntity> activeLoans = loanRepo.findByCustomerAndState(customer,"ACTIVE");
+    private boolean customerToolActive(TypeToolEntity typeTool, CustomerEntity customer) {
+        List<LoanEntity> activeLoans = loanRepo.findByCustomerAndState(customer, STATE_ACTIVE);
 
         for (LoanEntity loan : activeLoans) {
             List<ToolEntity> tools = loan.getTool();
@@ -165,84 +174,89 @@ public class LoanService {
 
     /**
      * Helper 2.2: The customer must be in active status (not restricted).
+     * 
      * @param customer
      * @return
      */
-    private boolean customerActive (CustomerEntity customer)
-    {
-        return "ACTIVE".equalsIgnoreCase(customer.getState());
+    private boolean customerActive(CustomerEntity customer) {
+        return STATE_ACTIVE.equalsIgnoreCase(customer.getState());
     }
 
     /**
      * Helper 2.2: The customer must not have any overdue loans.
+     * 
      * @param customer
      * @return
      */
-    private boolean expiredLoan(CustomerEntity customer){
-        List<LoanEntity> expiredLoans= loanRepo.findByCustomerAndState(customer, "EXPIRED");
+    private boolean expiredLoan(CustomerEntity customer) {
+        List<LoanEntity> expiredLoans = loanRepo.findByCustomerAndState(customer, "EXPIRED");
 
         return !expiredLoans.isEmpty();
     }
 
     /**
-     * Helper 2.2: The customer must not have any unpaid debts. Returns true if they have no debts, returns false if they have debts.
+     * Helper 2.2: The customer must not have any unpaid debts. Returns true if they
+     * have no debts, returns false if they have debts.
+     * 
      * @param customer
      * @return
      */
-    private boolean customerHasNoPendingDebts( CustomerEntity customer){
+    private boolean customerHasNoPendingDebts(CustomerEntity customer) {
         return debtsRepo.findByCustomerAndStatus(customer, "PENDING").isEmpty();
     }
 
-
     /**
-     * Helper: The tool must be available and have stock >=1. If it exists, return it; if not, return an optional.
+     * Helper: The tool must be available and have stock >=1. If it exists, return
+     * it; if not, return an optional.
+     * 
      * @param typeTool
      * @return
      */
-    private   Optional<ToolEntity> findAvailableTool(TypeToolEntity typeTool){
+    private Optional<ToolEntity> findAvailableTool(TypeToolEntity typeTool) {
         return toolRepo.findFirstByStateAndTypeTool("AVAILABLE", typeTool);
 
     }
 
     /**
-     * Helper 2.2: The system must verify that the return date is not earlier than the delivery date.
+     * Helper 2.2: The system must verify that the return date is not earlier than
+     * the delivery date.
+     * 
      * @param deliveryDate
      * @param returnDate
      * @return
      */
-    private boolean returnDateIsBeforeDeliveryDate (LocalDate deliveryDate, LocalDate returnDate){
+    private boolean returnDateIsBeforeDeliveryDate(LocalDate deliveryDate, LocalDate returnDate) {
         return returnDate.isBefore(deliveryDate);
     }
 
     /**
      * Helper 2.2: A customer can have a maximum of 5 active loans simultaneously.
+     * 
      * @param customer
      * @return
      */
-    private boolean customerLoanSize (CustomerEntity customer){
-        List<LoanEntity> activeLoans = loanRepo.findByCustomerAndState(customer,"ACTIVE");
+    private boolean customerLoanSize(CustomerEntity customer) {
+        List<LoanEntity> activeLoans = loanRepo.findByCustomerAndState(customer, STATE_ACTIVE);
         return activeLoans.size() < 5;
     }
 
-
-
     /**
      * RF2.3: Record tool returns, updating status and stock.
+     * 
      * @param loanId
      * @param toolStates
      */
 
-    //DAMAGED --> GOOD
+    // DAMAGED --> GOOD
     @Transactional
     public LoanEntity toolReturn(Long loanId, Map<Long, String> toolStates) {
 
         LoanEntity loan = loanRepo.findById(loanId)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró el préstamo con id: " + loanId));
 
-        if (loan.getState().equals("RETURNED")) {
+        if (loan.getState().equals(STATE_RETURNED)) {
             throw new IllegalArgumentException("El prestamo ya fue devuelto");
         }
-
 
         List<ToolEntity> toolsInLoan = loan.getTool();
 
@@ -253,13 +267,13 @@ public class LoanService {
             ToolEntity toolToUpdate = toolsInLoan.stream()
                     .filter(t -> t.getIdTool().equals(toolId))
                     .findFirst()
-                    .orElseThrow(() -> new IllegalStateException("La herramienta con ID " + toolId + " no pertenece a este préstamo."));
+                    .orElseThrow(() -> new IllegalStateException(
+                            "La herramienta con ID " + toolId + " no pertenece a este préstamo."));
 
             toolToUpdate.setState(newState);
         }
 
-        loan.setState("RETURNED");
-
+        loan.setState(STATE_RETURNED);
 
         LocalDate today = LocalDate.now();
         CustomerEntity customer = loan.getCustomer();
@@ -267,7 +281,6 @@ public class LoanService {
         if (today.isAfter(loan.getReturnDate())) {
             debtsService.debtForArrears(loan, customer, today);
         }
-
 
         for (ToolEntity tool : toolsInLoan) {
             String currentState = tool.getState();
@@ -279,7 +292,7 @@ public class LoanService {
             }
         }
 
-        LoanEntity save= loanRepo.save(loan);
+        LoanEntity save = loanRepo.save(loan);
 
         kardexService.registerToolReturn(save);
 
@@ -288,26 +301,28 @@ public class LoanService {
 
     /**
      * RF2.4 Automatically calculate late fees (daily rate)
+     * 
      * @param typeToolsId
      * @param deliveryDate
      * @param returnDate
      * @return
      */
-    public int RentalAmount(List<Long> typeToolsId, LocalDate deliveryDate, LocalDate returnDate){
+    public int calculateRentalAmount(List<Long> typeToolsId, LocalDate deliveryDate, LocalDate returnDate) {
 
-        List<TypeToolEntity> typeToolList= new ArrayList<>();
+        List<TypeToolEntity> typeToolList = new ArrayList<>();
 
-        for(Long typeToolId: typeToolsId ){
-            TypeToolEntity typeTool= typeToolRepo.findById(typeToolId)
-                    .orElseThrow(() -> new EntityNotFoundException("No se encontró el id de la herramienta: " + typeToolId));
+        for (Long typeToolId : typeToolsId) {
+            TypeToolEntity typeTool = typeToolRepo.findById(typeToolId)
+                    .orElseThrow(
+                            () -> new EntityNotFoundException("No se encontró el id de la herramienta: " + typeToolId));
 
             typeToolList.add(typeTool);
 
         }
 
-        long daysRental = ChronoUnit.DAYS.between(deliveryDate, returnDate) + 1; //calculate the rental days
+        long daysRental = ChronoUnit.DAYS.between(deliveryDate, returnDate) + 1; // calculate the rental days
 
-        int dailyRate= 0;
+        int dailyRate = 0;
 
         for (TypeToolEntity typeTool : typeToolList) {
             dailyRate += typeTool.getDailyRate();
@@ -318,25 +333,28 @@ public class LoanService {
 
     /**
      * RF6.1: List active loans and their status (ACTIVE, EXPIRED)
+     * 
      * @return List
      */
-    public List<LoanEntity> loanActiveAndExpire(){
-        return loanRepo.findByStateIsNot("RETURNED");
+    public List<LoanEntity> loanActiveAndExpire() {
+        return loanRepo.findByStateIsNot(STATE_RETURNED);
     }
 
     /**
      * Filtrar prestamos por rango de fecha
+     * 
      * @param startDate
      * @param endDate
      * @return
      */
-    public List<LoanEntity> loanActiveAndExpireFilterDate(LocalDate startDate, LocalDate endDate){
-        List<LoanEntity> loans= loanRepo.findByDeliveryDateBetween(startDate, endDate);
+    public List<LoanEntity> loanActiveAndExpireFilterDate(LocalDate startDate, LocalDate endDate) {
+        List<LoanEntity> loans = loanRepo.findByDeliveryDateBetween(startDate, endDate);
         return loans;
     }
 
     /**
      * RF 6.3: Report on the most frequently borrowed tools
+     * 
      * @return
      */
     public List<Map<String, Object>> getTopToolsReport() {
@@ -360,6 +378,7 @@ public class LoanService {
 
     /**
      * RF 6.3: Report on the most frequently borrowed tools (DATE)
+     * 
      * @param startDate
      * @param endDate
      * @return
@@ -380,37 +399,36 @@ public class LoanService {
         return report;
     }
 
-
-    //-------------------------Utility-----------------------------------------------
-
+    // -------------------------Utility-----------------------------------------------
 
     /**
      * Utility 1: Return all loans
+     * 
      * @return
      */
     @Transactional
-    public List<LoanEntity> findByAll(){
+    public List<LoanEntity> findByAll() {
         return loanRepo.findAll();
     }
 
     /**
      * Utility 2:
+     * 
      * @return
      */
-    public int countLoansByState(String state){
+    public int countLoansByState(String state) {
         return loanRepo.countLoansByState(state);
     }
 
     /**
      * Utility 3:
+     * 
      * @param startDate
      * @param endDate
      * @return
      */
-    public int countLoansByDeliveryDateBetweenAndState(LocalDate startDate, LocalDate endDate, String state){
+    public int countLoansByDeliveryDateBetweenAndState(LocalDate startDate, LocalDate endDate, String state) {
         return loanRepo.countByDeliveryDateBetweenAndState(startDate, endDate, state);
     }
-
-
 
 }

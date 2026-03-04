@@ -7,20 +7,24 @@ import com.example.ProyectoTingeso.Repositories.TypeToolRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ToolService {
+
+    private static final String TOOL_NOT_FOUND = "Herramienta no encontrada: ";
+
     private final ToolRepository toolRepo;
     private final TypeToolService typeToolService;
     private final KardexService kardexService;
     private final TypeToolRepository typeToolRepository;
 
-
     @Autowired
-    public ToolService(ToolRepository toolRepo, TypeToolService typeToolService, KardexService kardexService, TypeToolRepository typeToolRepository) {
+    public ToolService(ToolRepository toolRepo, TypeToolService typeToolService, KardexService kardexService,
+            TypeToolRepository typeToolRepository) {
         this.toolRepo = toolRepo;
         this.typeToolService = typeToolService;
         this.kardexService = kardexService;
@@ -28,36 +32,33 @@ public class ToolService {
     }
 
     /**
-     * RF1.1: Register a new tool instance. Search for the tool type by name, and if it does not exist, create it.
-     * @param name
-     * @param category
-     * @param replacementValue
-     * @param dailyRate
-     * @return
+     * RF1.1: Register a new tool instance.
+     *
+     * @param name             tool name
+     * @param category         tool category
+     * @param replacementValue replacement value
+     * @param dailyRate        daily rental rate
+     * @param debtRate         daily late fee rate
+     * @return saved ToolEntity
      */
     public ToolEntity registerTool(String name, String category, int replacementValue, int dailyRate, int debtRate) {
-
-        TypeToolEntity typeToolEntity = typeToolService.findOrCreateTypeTool(name, category, replacementValue, dailyRate, debtRate);
-
-        // update stock
+        TypeToolEntity typeToolEntity = typeToolService.findOrCreateTypeTool(name, category, replacementValue,
+                dailyRate, debtRate);
         typeToolEntity.setStock(typeToolEntity.getStock() + 1);
 
-        //------------Create Tool--------------------------
         ToolEntity tool = new ToolEntity();
         tool.setTypeTool(typeToolEntity);
         tool.setState("AVAILABLE");
         return toolRepo.save(tool);
     }
 
-
     /**
-     * RF 1.2: Changes the status of a tool to “DECOMMISSIONED.”
-     * @param tool
-     * @return
+     * RF 1.2: Changes the status of a tool to "DECOMMISSIONED."
+     *
+     * @param tool tool entity
+     * @return updated ToolEntity
      */
-    //state: AVAILABLE (DISPONIBLE), ON_LOAN(PRESTADA), UNDER_REPAIR(EN REPARACIÓN), DECOMMISSIONED(DADA DE BAJA)
     public ToolEntity unsubscribeTool(ToolEntity tool) {
-
         tool.setState("DECOMMISSIONED");
         kardexService.registerDecommissioned(tool);
         return toolRepo.save(tool);
@@ -65,54 +66,54 @@ public class ToolService {
 
     /**
      * Helper 1.2: Discard unused tools
-     * @param idTool
-     * @return
+     *
+     * @param idTool tool ID
+     * @return updated ToolEntity
      */
-
-    public ToolEntity deactivateUnusedTool (Long idTool) {
+    public ToolEntity deactivateUnusedTool(Long idTool) {
         ToolEntity tool = toolRepo.findById(idTool)
-                .orElseThrow(() -> new EntityNotFoundException("Herramienta no encontrada: " + idTool));
+                .orElseThrow(() -> new EntityNotFoundException(TOOL_NOT_FOUND + idTool));
 
         if (tool.getState().equals("AVAILABLE")) {
             unsubscribeTool(tool);
             return tool;
         }
-
         throw new IllegalStateException("La herramienta esta en uso actualmente " + idTool);
     }
 
     /**
      * Helper 1.2: Discard damaged tools
-     * @param idTool
-     * @return
+     *
+     * @param idTool tool ID
+     * @return updated ToolEntity
      */
-
-    public ToolEntity discardDamagedTools (Long idTool) {
+    public ToolEntity discardDamagedTools(Long idTool) {
         ToolEntity tool = toolRepo.findById(idTool)
-                .orElseThrow(() -> new EntityNotFoundException("Herramienta no encontrada: " + idTool));
+                .orElseThrow(() -> new EntityNotFoundException(TOOL_NOT_FOUND + idTool));
 
         if (tool.getState().equals("UNDER_REPAIR")) {
             unsubscribeTool(tool);
             return tool;
         }
-
         throw new IllegalStateException("La herramienta no esta en reparación " + idTool);
     }
 
-    //-------------------------------------------Utility functions---------------------------------------------------------------
+    // -------------------------------------------Utility
+    // functions---------------------------------------------------------------
 
     /**
      * Utility 1 (RF 1.1): Register a batch of tools
      *
-     * @param name
-     * @param category
-     * @param replacementValue
-     * @param dailyRate
-     * @param debtRate
-     * @param amount
-     * @return
+     * @param name             tool name
+     * @param category         category
+     * @param replacementValue replacement cost
+     * @param dailyRate        daily rate
+     * @param debtRate         debt rate
+     * @param amount           quantity to register
+     * @return list of created ToolEntity
      */
-    public List<ToolEntity> registerLotTool(String name, String category, int replacementValue, int dailyRate, int debtRate, int amount) {
+    public List<ToolEntity> registerLotTool(String name, String category, int replacementValue, int dailyRate,
+            int debtRate, int amount) {
         List<ToolEntity> tools = new ArrayList<>();
 
         for (int i = 0; i < amount; i++) {
@@ -121,18 +122,16 @@ public class ToolService {
         }
 
         kardexService.registerLotMovement(tools);
-
         return tools;
     }
 
     /**
      * Utility 2: Search for all tools of the same type
-     * @param idTypeTool
-     * @return
+     *
+     * @param idTypeTool type tool ID
+     * @return list of ToolEntity
      */
-
     public List<ToolEntity> findAllByTypeTool(Long idTypeTool) {
-
         Optional<TypeToolEntity> typeToolOptional = typeToolRepository.findById(idTypeTool);
 
         if (typeToolOptional.isEmpty()) {
@@ -140,22 +139,17 @@ public class ToolService {
         }
 
         TypeToolEntity typeTool = typeToolOptional.get();
-
-        List<ToolEntity> tools = toolRepo.findAllByTypeTool(typeTool);
-
-        return tools;
+        return toolRepo.findAllByTypeTool(typeTool);
     }
 
     /**
      * Utility 3: Search for a tool by ID
-     * @param idTool
-     * @return
+     *
+     * @param idTool tool ID
+     * @return ToolEntity
      */
-
     public ToolEntity findToolById(Long idTool) {
-
-        ToolEntity tool = toolRepo.findById(idTool).orElseThrow(() -> new EntityNotFoundException("Herramienta no encontrada: " + idTool));
-
-        return tool;
+        return toolRepo.findById(idTool)
+                .orElseThrow(() -> new EntityNotFoundException(TOOL_NOT_FOUND + idTool));
     }
 }

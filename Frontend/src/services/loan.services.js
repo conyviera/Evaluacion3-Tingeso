@@ -26,7 +26,7 @@ const payDebt = async (idDebt) => {
 };
 
 const rentalAmount = async (data) => {
-    return await httpClient.post('/loans/RentalAmount', data);
+    return await httpClient.post('/loans/calculateRentalAmount', data);
 }
 
 const getTopTools = async () => {
